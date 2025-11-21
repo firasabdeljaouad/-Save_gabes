@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+    <div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1 overlay2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="slider_text ">
+                            <span>Get Started Today.</span>
+                            <h3> Help Gabes
+                                When They Need</h3>
+                            <p>With so much to consume and such little time, coming up <br>
+                                with relevant title ideas is essential</p>
+                            <a href="{{ path('app_projets') }}" class="boxed-btn3">Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reson_area section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb-55">
+                        <h3><span>Reason of Helping</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{{ asset('img/ocean.jpg') }}" alt="ocean">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Collecting Fund</h4>
+                            <p>Lorem ipsum, or lipsum as it is
+                                sometimes known, is dummy
+                                text used in laying out print.</p>
+                            <a href="#" class="read_more">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{{ asset('img/ocean.jpg') }}" alt="">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Blood Camp</h4>
+                            <p>Lorem ipsum, or lipsum as it is
+                                sometimes known, is dummy
+                                text used in laying out print.</p>
+                            <a href="#" class="read_more">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{{ asset('img/ocean.jpg') }}" alt="">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Friendly Volunteer</h4>
+                            <p>Lorem ipsum, or lipsum as it is
+                                sometimes known, is dummy
+                                text used in laying out print.</p>
+                            <a href="#" class="read_more">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="latest_activites_area">
+        <div class=" video_bg_1 video_activite  d-flex align-items-center justify-content-center">
+            <a class="popup-video" href="https://www.youtube.com/watch?v=MG3jGHnBVQs">
+                <i class="flaticon-ui"></i>
+            </a>
+        </div>
+        <div class="container">
+            <div class="row justify-content-end">
+                <div class="col-lg-7">
+                    <div class="activites_info">
+                        <div class="section_title">
+                            <h3> <span>Watch Our Latest  </span><br>
+                                Activities</h3>
+                        </div>
+                        <p class="para_1">Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do
+                            eiusmod tempor incididunt  ut labore dolore magna aliqua.
+                            enim minim veniam, quis nostrud exercitation.</p>
+                        <p class="para_2">Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do
+                            eiusmod tempor incididunt  ut labore dolore magna aliqua.
+                            enim minim veniam, quis nostrud exercitation. tempor
+                            incididunt  ut labore dolore magna aliqua. enim minim
+                            veniam, quis nostrud exercitation.</p>
+                        <a href="#" data-scroll-nav='1' class="boxed-btn4">Donate Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <div class="popular_causes_area section_padding">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="section_title text-center mb-55">
+                                <h3><span>Popular Causes</span></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="causes_active owl-carousel">
+                                <div class="single_cause">
+                                    <div class="thumb">
+                                        <img src="{{ asset('img/causes/1.jpg') }}" alt="">
+                                    </div>
+                                    <div class="causes_content">
+                                        <div class="custom_progress_bar">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="progres_count">
+                                                    30%
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="balance d-flex justify-content-between align-items-center">
+                                            <span>Raised: $5000.00 </span>
+                                            <span>Goal: $9000.00 </span>
+                                        </div>
+                                        <h4>Help us to save the plant</h4>
+                                        <p>The passage is attributed to an
+                                            unknown typesetter in the century
+                                            who is thought</p>
+                                        <a class="read_more" href="cause_details.html">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+    <div class="counter_area">
+        <div class="container">
+            <div class="counter_bg overlay">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-calendar"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">120</h3>
+                                <p>Finished Event</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-heart-beat"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">120</h3>
+                                <p>Finished Event</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-in-love"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">120</h3>
+                                <p>Finished Event</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-hug"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">120</h3>
+                                <p>Finished Event</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

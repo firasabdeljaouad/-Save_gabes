@@ -1,0 +1,46 @@
+{% extends 'dashboard.html.twig' %}
+{% block body%}
+    <br>
+    <div class="container">
+
+        <div class="form">
+            <h2>Ajoute un Projet</h2>
+            {{ form_start(form,{ attr: {'novalidate': 'novalidate'} }) }}
+            {{ form_row(form.name,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_start(form) }}
+            {{ form_row(form.image,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.description,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.alldescription,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.TargetAmount,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.startDate,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.endDate,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.status,{
+                attr:{'class': 'form-control'}
+            }) }}
+            {{ form_row(form.sauvegarder,{
+                attr:{
+                    'class': 'btn btn-primary mt-3 custom-submit-btn',
+                    'style': 'margin-top:25px;'
+                }
+            }) }}
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,120 @@
+.header-area {
+    left: 0;
+    right: 0;
+    width: 100%;
+    top: 0;
+    z-index: 9;
+    padding: 0 100px 50px 100px;
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .header-area {
+        padding: 0 10px 10px 10px;
+    }
+}
+
+/* @media #{$tablet_device} */
+@media (max-width: 768px) {
+    .header-area {
+        padding: 0 10px 10px 10px;
+    }
+}
+
+.header-area .main-header-area {
+    background: #3CC78F;
+    border-radius: 10px;
+    padding: 25px 35px;
+    position: absolute;
+    bottom: -50px;
+    z-index: 999;
+    left: 100px;
+    top: 70px;
+    right: 100px;
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .header-area .main-header-area {
+        right: 15px;
+        left: 15px;
+        padding: 12px 0;
+    }
+}
+
+/* @media #{$tablet_device} */
+@media (max-width: 768px) {
+    .header-area .main-header-area {
+        right: 15px;
+        left: 15px;
+        padding: 12px 0;
+    }
+}
+
+/* @media #{$mid_device} */
+@media (max-width: 992px) {
+    .header-area .main-header-area {
+        right: 60px;
+        left: 60px;
+    }
+}
+
+.header-area .main-header-area .logo img {
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .header-area .main-header-area .logo img {
+        width: 100px;
+    }
+}
+
+/* @media #{$tablet_device} */
+@media (max-width: 768px) {
+    .header-area .main-header-area .logo img {
+        width: 100px;
+    }
+}
+
+.header-area .main-header-area .Appointment {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.header-area .main-header-area .Appointment .socail_links ul li {
+    display: inline-block;
+}
+
+.header-area .main-header-area .Appointment .socail_links ul li a {
+    color: #A8A7A0;
+    margin: 0 10px;
+    font-size: 15px;
+}
+
+.header-area .main-header-area .Appointment .socail_links ul li a:hover {
+    color: #fff;
+}
+
+.header-area .main-header-area .Appointment .book_btn {
+    margin-left: 30px;
+}
+
+.header-area .main-header-area .Appointment .book_btn a {
+    background: #fff;
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    border-radius: 4px;
+    font-family: $font2;
+}
+
+/* @media #{$mid_device} */
+@media (max-width: 992px) {
+    .header-area .main-header-area .Appointment .book_btn a {
+        padding: 12px 20px;
+    }
+}
+
+.header-area .main-header
