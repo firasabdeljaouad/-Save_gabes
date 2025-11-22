@@ -15,13 +15,19 @@
         </tr>
         </thead>
         <tbody>
+        {% set totalAmount = 0 %}
         {% for donation in donations %}
             <tr>
                 <td>Firas Abdeljaouad</td>
                 <td>$ {{ donation.amount }}</td>
 
             </tr>
+            {% set totalAmount = totalAmount + donation.amount %}
         {% endfor %}
+        <tr>
+            <td><strong>Total: </strong></td>
+            <td>$ {{ totalAmount }}</td>
+        </tr>
         </tbody>
     </table>
 {% endif %}
