@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Événements - Charifit{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <br>
+        <h2 class="text-center mb-5 fw-bold" style="color: #3CC78F; letter-spacing:1px;">
+            ✨ Nos Événements
+        </h2>
+
+        <style>
+            .event-card {
+                border-radius: 18px;
+                transition: all 0.3s ease;
+                border: none;
+                background: #ffffff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+                padding: 0;
+                margin-bottom: 25px;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .event-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            }
+
+            .event-image {
+                height: 180px;
+                background: linear-gradient(45deg, #3CC78F, #2da876);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 3rem;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .event-content {
+                padding: 20px;
+            }
+
+            .event-badge {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+                border-radius: 12px;
+            }
+
+            .event-title {
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: #191d34;
+                margin-bottom: 10px;
+            }
+
+            .meta-text {
+                font-size: 0.85rem;
+                color: #6c757d;
+                line-height: 1.4;
+                margin-bottom: 10px;
+            }
+
+            .view-btn {
+                border-radius: 20px;
+                padding: 8px 18px;
+                background: #3CC78F;
+                border: none;
+                color: white;
+                text-decoration: none;
+                display: inline-block;
+                transition: all 0.3s ease;
+                font-size: 0.9rem;
+            }
+
+            .view-btn:hover {
+                background: #2da876;
+                transform: translateY(-2px);
+            }
+
+            .no-image {
+                background: linear-gradient(45deg, #3CC78F, #2da876);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .no-image i {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+        </style>
+
+        <div class="row">
+            {% for event in tabEvenements %}
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="event-card">
+                        <!-- Event Image -->
+                        <div class="event-image {% if not event.imageName %}no-image{% endif %}"
+                             {% if event.imageName %}style="background-image: url('{{ asset('images/evenements/' ~ event.imageName) }}')"{% endif %}>
+                            {% if not event.imageName %}
+                                <i class="fas fa-calendar-alt"></i>
+                                <small>Aucune image</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="event-content">
+                            <div class="d-flex justify-content-between mb-3">
+                            <span class="event-badge" style="background: #3CC78F; color: white;">
+                                {{ event.status }}
+                            </span>
+                                <span class="event-badge" style="background: #f8f9fa; color: #333; border: 1px solid #ddd;">
+                                {{ event.typeEvenement.nom ?? 'Événement' }}
+                            </span>
+                            </div>
+
+                            <h5 class="event-title">
+                                {{ event.titre }}
+                            </h5>
+
+                            <p class="meta-text">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                                <strong>{{ event.lieu }}</strong><br>
+                                <i class="fas fa-calendar-alt text-primary"></i>
+                                Du {{ event.dateDebut|date('d/m/Y') }}<br>
+                                → {{ event.dateFin|date('d/m/Y') }}
+                            </p>
+
+                            {% if event.description %}
+                                <p class="text-muted small">
+                                    {{ event.description|slice(0, 100) ~ '...' }}
+                                </p>
+                            {% endif %}
+
+                            <div class="text-center mt-3">
+                                <a href="#" class="view-btn">
+                                    Voir plus <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Aucun événement disponible pour le moment.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

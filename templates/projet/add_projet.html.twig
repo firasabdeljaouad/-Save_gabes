@@ -6,29 +6,35 @@
     <div class="form">
         <h2>Ajoute un Projet</h2>
         {{ form_start(form) }}
-            {{ form_row(form.name,{
+            {{ form_row(form.titre,{
                 attr:{'class': 'form-control'}
             }) }}
         {{ form_start(form) }}
-        {{ form_row(form.image,{
-            attr:{'class': 'form-control'}
-        }) }}
         {{ form_row(form.description,{
             attr:{'class': 'form-control'}
         }) }}
-        {{ form_row(form.alldescription,{
+        {{ form_row(form.lieu,{
             attr:{'class': 'form-control'}
         }) }}
-        {{ form_row(form.TargetAmount,{
+        {{ form_row(form.adresse,{
             attr:{'class': 'form-control'}
         }) }}
-        {{ form_row(form.startDate,{
+        {{ form_row(form.dateDebut,{
             attr:{'class': 'form-control'}
         }) }}
-        {{ form_row(form.endDate,{
+        {{ form_row(form.dateFin,{
             attr:{'class': 'form-control'}
         }) }}
-        {{ form_row(form.status,{
+        {{ form_row(form.nombreParticipants,{
+            attr:{'class': 'form-control'}
+        }) }}
+        {{ form_row(form.createdAt,{
+            attr:{'class': 'form-control'}
+        }) }}
+        {{ form_row(form.updatedAt,{
+            attr:{'class': 'form-control'}
+        }) }}
+        {{ form_row(form.imageName,{
             attr:{'class': 'form-control'}
         }) }}
         {{ form_row(form.sauvegarder,{
