@@ -16,14 +16,17 @@ class Donation
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: "Amount est obligatoire.")]
     private ?string $amount = null;
 
+    #[Assert\NotBlank(message: "le method de payment est obligatoire.")]
     #[ORM\Column(length: 50)]
     private ?string $paymentMethod = null;
-
+    #[Assert\NotBlank(message: "Status est obligatoire.")]
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
+    #[Assert\NotBlank(message: "transaction est obligatoire.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $transactionId = null;
 

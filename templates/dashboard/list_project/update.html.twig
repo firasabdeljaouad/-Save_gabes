@@ -18,10 +18,10 @@
                 attr:{'class': 'form-control'}
             }) }}
             {{ form_row(form.startDate,{
-                attr:{'class': 'form-control'}
+                attr:{'class': 'form-control project_startProject'}
             }) }}
             {{ form_row(form.endDate,{
-                attr:{'class': 'form-control'}
+                attr:{'class': 'form-control project_endProject'}
             }) }}
             {{ form_row(form.status,{
                 attr:{'class': 'form-control'}
@@ -38,4 +38,41 @@
         </div>
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Use your custom classes
+            const startDate = document.querySelector('.project_startProject');
+            const endDate = document.querySelector('.project_endProject');
+
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split('T')[0];
+
+            // Set minimum date to today for startDate (disable past dates)
+            startDate.min = today;
+
+            // Disable endDate initially (no start date selected yet)
+            endDate.disabled = true;
+
+            // Update endDate when startDate changes
+            startDate.addEventListener('change', function () {
+                if (this.value) {
+                    // Enable endDate when startDate has a value
+                    endDate.disabled = false;
+
+                    // Set minimum date for endDate to the selected startDate
+                    endDate.min = this.value;
+
+                    // Reset endDate if it's before the new startDate
+                    if (endDate.value && endDate.value < this.value) {
+                        endDate.value = '';
+                    }
+                } else {
+                    // Disable endDate if startDate is cleared
+                    endDate.disabled = true;
+                    endDate.value = '';
+                }
+            });
+        });
+    </script>
 {% endblock %}
