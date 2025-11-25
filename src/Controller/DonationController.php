@@ -58,7 +58,11 @@ final class DonationController extends AbstractController
     }
 
     #[Route('/list_donations/{id}', name: 'app_donations_details')]
-    public function show(DonationRepository $donationRepository, ProjectRepository $projectRepository, int $id): Response
+    public function show(
+        DonationRepository $donationRepository,
+        ProjectRepository $projectRepository,
+        int $id
+    ): Response
     {
         // Fetch the project
         $projet = $projectRepository->find($id);
@@ -68,7 +72,7 @@ final class DonationController extends AbstractController
         }
 
         // Fetch donations for this project
-        $donations = $donationRepository->findBy(['project' => $id]);
+        $donations = $donationRepository->findByProjectOrderByAmountDesc($id);
 
         return $this->render('cause_details/donation_list_by_id.html.twig', [
             'donations' => $donations,

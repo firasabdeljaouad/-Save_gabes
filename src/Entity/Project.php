@@ -19,11 +19,15 @@ class Project
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le nom du projet est obligatoire.")]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\s]+$/',
+        message: 'Ce champ ne doit contenir que des lettres.'
+    )]
     #[Assert\Length(
-        min: 3,
+        min: 5,
         max: 255,
-        minMessage: "Le nom du projet doit contenir au moins {{ limit }} caractères.",
-        maxMessage: "Le nom du projet ne peut pas dépasser {{ limit }} caractères."
+        minMessage: "Le nom du projet doit contenir au moins 5 caractères.",
+        maxMessage: "Le nom du projet ne peut pas dépasser 255 caractères."
     )]
     private ?string $name = null;
 
@@ -35,14 +39,24 @@ class Project
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Assert\NotBlank(message: "Le montant cible est obligatoire.")]
     #[Assert\Positive(message: "Le montant cible doit être un nombre positif.")]
+    #[Assert\Type(
+        type: 'integer',
+        message: 'This value must be a number'
+    )]
     private ?string $TargetAmount = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: "La date de début est obligatoire.")]
+    #[Assert\Type(\DateTimeInterface::class)]
     private ?\DateTime $startDate = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank(message: "La date de fin est obligatoire.")]
+    #[Assert\Type(\DateTimeInterface::class)]
+    #[Assert\GreaterThan(
+        propertyPath: 'startDate',
+        message: 'End date must be after start date'
+    )]
     private ?\DateTime $endDate = null;
 
     #[ORM\Column(length: 50)]

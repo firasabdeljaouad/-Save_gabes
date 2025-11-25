@@ -1,13 +1,12 @@
 {% extends 'dashboard.html.twig' %}
 
 {% block body %}
-    <br>
     <div class="container">
 
         <div class="form">
             <h2>Ajoute un Projet</h2>
 
-            {{ form_start(form) }}
+            {{ form_start(form,{'attr':{'novalidate': 'novalidate'}} ) }}
 
             {{ form_row(form.name, {
                 attr: {'class': 'form-control'}
@@ -54,6 +53,8 @@
 
     </div>
 
+    {#
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -88,8 +89,8 @@
                     endDate.disabled = true;
                     endDate.value = '';
                 }
-            });
+            );
         });
-    </script>
+    </script>#}
 
 {% endblock %}

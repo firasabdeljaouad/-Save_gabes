@@ -78,13 +78,10 @@ final class ProjetController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $project->setImage($newFilename);
             }
-
-
 
             $em->flush();
             return $this->redirectToRoute('app_projets');
