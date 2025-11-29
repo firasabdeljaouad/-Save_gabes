@@ -6,6 +6,7 @@ use App\Repository\DonationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Float_;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
@@ -16,13 +17,13 @@ class Donation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(type:'float')]
     #[Assert\NotBlank(message: "Amount est obligatoire.")]
     #[Assert\Regex(
         pattern: '/^[0-9]+$/',
         message: 'Ce champ ne doit contenir que des nombres.'
     )]
-    private ?string $amount = null;
+    private ?float $amount = null;
 
     #[Assert\NotBlank(message: "le method de payment est obligatoire.")]
     #[ORM\Column(length: 50)]
@@ -47,6 +48,9 @@ class Donation
      */
     #[ORM\OneToMany(targetEntity: Donater::class, mappedBy: 'donations')]
     private Collection $donaters;
+
+    #[ORM\Column(length: 120)]
+    private ?string $name = null;
 
     public function __construct()
     {
@@ -158,6 +162,18 @@ class Donation
                 $donater->setDonations(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -17,6 +17,9 @@
                     {{ form_start(form, {'attr': {'class': 'donation_form'}}) }}
                     <div class="row align-items-center">
                         <div class="col-md-4">
+                            {{ form_row(form.name) }}
+                        </div>
+                        <div class="col-md-4">
                             {{ form_row(form.amount) }}
                         </div>
                         <div class="col-md-4">
