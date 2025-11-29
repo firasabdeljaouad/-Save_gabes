@@ -114,7 +114,7 @@ final class ProjetController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                // 2) Déplacer l'image uploadée
+                //  Déplacer l'image uploadée
                 try {
                     $imageFile->move(
                         $this->getParameter('projects_images_directory'),
@@ -124,7 +124,7 @@ final class ProjetController extends AbstractController
                     // gérer l'erreur
                 }
 
-                // 3) Supprimer l’ancienne image si elle existe
+                //  Supprimer l’ancienne image si elle existe
                 if ($oldImage) {
                     $oldPath = $this->getParameter('projects_images_directory') . '/' . $oldImage;
                     if (file_exists($oldPath)) {
@@ -132,7 +132,7 @@ final class ProjetController extends AbstractController
                     }
                 }
 
-                // 4) Mettre à jour l'entité
+                //  Mettre à jour l'entité
                 $project->setImage($newFilename);
             } else {
                 // garder l'ancienne image

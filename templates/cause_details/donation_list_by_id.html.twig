@@ -7,10 +7,11 @@
 {% if donations is empty %}
     <p>Aucune donation pour ce projet.</p>
 {% else %}
+
     <table class="table-borderless">
         <thead>
         <tr>
-            <th>Name</th>
+            <th>nom</th>
             <th>Montant</th>
         </tr>
         </thead>
@@ -18,9 +19,8 @@
         {% set totalAmount = 0 %}
         {% for donation in donations %}
             <tr>
-                <td>Firas Abdeljaouad</td>
+                <td>{{ donation.name }}</td>
                 <td>$ {{ donation.amount }}</td>
-
             </tr>
             {% set totalAmount = totalAmount + donation.amount %}
         {% endfor %}
@@ -30,5 +30,6 @@
         </tr>
         </tbody>
     </table>
-{% endif %}
+    {% endif %}
+
 {% endblock %}

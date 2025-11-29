@@ -16,6 +16,24 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
+
+
+
+
+
+
+
+
+public function findListDonationByIdProject(int $id):array
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.id = :id')
+        ->setParameter('id', $id)
+        ->orderBy('p.donations', 'DESC')
+        ->getQuery()
+        ->getResult()
+        ;
+}
 //    /**
 //     * @return Project[] Returns an array of Project objects
 //     */
