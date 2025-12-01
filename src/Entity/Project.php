@@ -39,10 +39,7 @@ class Project
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Assert\NotBlank(message: "Le montant cible est obligatoire.")]
     #[Assert\Positive(message: "Le montant cible doit être un nombre positif.")]
-    #[Assert\Type(
-        type: 'integer',
-        message: 'This value must be a number'
-    )]
+
     private ?string $TargetAmount = null;
 
     #[ORM\Column]

@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\ProjectFromType;
+use App\Repository\DonationRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class ProjetController extends AbstractController
 {
-    #[Route('/projet', name: 'app_projets')]
+   /* #[Route('/projet', name: 'app_projets')]
     public function index(ProjectRepository $projectRepository): Response
     {
         $projets = $projectRepository->findAll();
@@ -23,7 +25,7 @@ final class ProjetController extends AbstractController
         return $this->render('projet/index.html.twig', [
             'projets' => $projets,
         ]);
-    }
+    }*/
 
     #[Route('/list_projet', name: 'app_list_projets')]
     public function list(ProjectRepository $projectRepository): Response
@@ -35,16 +37,21 @@ final class ProjetController extends AbstractController
         ]);
     }
     #[Route('/cause/{id}', name: 'app_cause_details')]
-    public function show(ProjectRepository $projectRepository,int $id): Response
+    public function show(
+        ProjectRepository $projectRepository,
+        DonationRepository $donationRepository,
+        int $id): Response
     {
         $projet = $projectRepository->find($id);
 
       //  if (!$projet) {
        //     throw $this->createNotFoundException('L\'article avec l\'ID ' . $id . ' n\'existe pas.');
        // }
+        $donations = $donationRepository->findBy(['project' => $projet]);
 
         return $this->render('cause_details/index.html.twig', [
             'projet' => $projet,
+            'donations' => $donations,
         ]);
     }
 
@@ -161,7 +168,43 @@ public function deleteProject(Project $project,EntityManagerInterface $em,Reques
         return $this->redirectToRoute('app_projets');
     }
 
+#[Route('/projet', name: 'app_projets')]
 
+    public function listProject(
+        Request            $request,
+        ProjectRepository  $projectRepository,
+        PaginatorInterface $paginator,
 
+    ): Response
+    {
+        $search = $request->query->get('search');
+        $status = $request->query->get('status');
+        $dateFrom = $request->query->get('date_from');
+        $dateTo = $request->query->get('date_to');
+
+        $criteria = array_filter([
+            'search' => $search,
+            'status' => $status,
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+        ], function ($value) {
+            return $value !== null && $value !== '';
+        });
+
+        if (!empty($criteria)) {
+            $query  = $projectRepository->findProjectByCriteriaQuery($criteria);
+        } else {
+            $query  = $projectRepository->findAllQuery();
+        }
+        $projets = $paginator->paginate(
+            $query,                                    // Query object
+            $request->query->getInt('page', 1),       // Current page number, default 1
+            6                                          // Items per page
+        );
+        return $this->render("projet/index.html.twig", [
+            "projets" => $projets,
+            "currentFilters" => $criteria
+        ]);
+    }
 
 }

@@ -16,6 +16,7 @@ class ProjectFromType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('image', FileType::class, [
                 'label' => 'Votre image de projet  (Des fichiers images uniqument)',
                 'mapped' => false,
