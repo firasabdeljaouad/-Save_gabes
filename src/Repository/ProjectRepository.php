@@ -16,8 +16,8 @@ class ProjectRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Project::class);
     }
-<<<<<<< Updated upstream
-=======
+
+
 /*
 public function findListDonationByIdProject(int $id):array
 {
@@ -70,7 +70,7 @@ public function findListDonationByIdProject(int $id):array
         return $q->getQuery();
     }
 
->>>>>>> Stashed changes
+
 
 //    /**
 //     * @return Project[] Returns an array of Project objects
