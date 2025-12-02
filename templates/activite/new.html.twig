@@ -1,0 +1,67 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block page_title %}Nouvelle Activité{% endblock %}
+{% block page_subtitle %}Créer une nouvelle activité{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-4">
+                <h3 class="h5 mb-0 d-flex align-items-center gap-2">
+                    <span class="material-symbols-rounded">add_circle</span>
+                    Nouvelle activité
+                </h3>
+            </div>
+
+            <div class="card-body p-5">
+                {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+                <div class="mb-4">
+                    {{ form_label(form.titre, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.titre, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                    <div class="text-danger small mt-1">
+                        {{ form_errors(form.titre, {'attr': {'class': 'text-danger small mt-1 d-block'}}) }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    {{ form_label(form.lieu, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger small mt-1">
+                        {{ form_errors(form.lieu, {'attr': {'class': 'text-danger small mt-1 d-block'}}) }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    {{ form_label(form.date, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger small mt-1">
+                        {{ form_errors(form.date, {'attr': {'class': 'text-danger small mt-1 d-block'}}) }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    {{ form_label(form.description, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger small mt-1">
+                        {{ form_errors(form.description, {'attr': {'class': 'text-danger small mt-1 d-block'}}) }}
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <button class="btn btn-success btn-lg px-5 d-flex align-items-center gap-2">
+                        <span class="material-symbols-rounded">check_circle</span>
+                        Enregistrer
+                    </button>
+                    <a href="{{ path('app_activite_index') }}" class="btn btn-outline-secondary btn-lg">
+                        Annuler
+                    </a>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

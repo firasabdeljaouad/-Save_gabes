@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activités{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+
+    <ul class="nav nav-tabs" id="activiteTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="recent-tab" data-bs-toggle="tab" data-bs-target="#recent" type="button" role="tab" aria-controls="recent" aria-selected="true">
+                Activités récentes
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">
+                Toutes les activités
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-4" id="activiteTabsContent">
+        <div class="tab-pane fade show active" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+            {% if recentes is not empty %}
+                <div class="row g-4">
+                    {% for activite in recentes %}
+                        <div class="col-md-4">
+                            <div class="card shadow-sm h-100 border-0 rounded-3">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success fw-bold">{{ activite.titre }}</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-calendar-alt me-2"></i>
+                                        {{ activite.date ? activite.date|date('d/m/Y H:i') : 'Date non définie' }}
+                                    </p>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        {{ activite.lieu }}
+                                    </p>
+                                    <p>{{ activite.description|slice(0, 120) ~ '...' }}</p>
+                                    <button
+                                        class="btn btn-success btn-sm btn-details"
+                                        data-id="{{ activite.id }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailsModal">
+                                        Voir détails
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center text-muted fst-italic">Aucune activité récente disponible.</p>
+            {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+            {% if activites is not empty %}
+                <div class="row g-4">
+                    {% for activite in activites %}
+                        <div class="col-md-4">
+                            <div class="card shadow-sm h-100 border-0 rounded-3">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success fw-bold">{{ activite.titre }}</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-calendar-alt me-2"></i>
+                                        {{ activite.date ? activite.date|date('d/m/Y H:i') : 'Date non définie' }}
+                                    </p>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        {{ activite.lieu }}
+                                    </p>
+                                    <p>{{ activite.description|slice(0, 120) ~ '...' }}</p>
+                                    <button
+                                        class="btn btn-success btn-sm btn-details"
+                                        data-id="{{ activite.id }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailsModal">
+                                        Voir détails
+                                    </button>
+                                    <a href="{{ path('participer_activite', { id: activite.id }) }}"
+                                       class="btn btn-primary btn-sm mt-2">
+                                       Participer
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center text-muted fst-italic">Aucune activité disponible.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% include 'activite/modal.html.twig' %}
+{% endblock %}

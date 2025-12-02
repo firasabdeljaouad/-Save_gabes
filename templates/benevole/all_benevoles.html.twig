@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les Bénévoles{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h2 class="mb-4 text-success text-center">Tous les Bénévoles</h2>
+
+    {% if allBenevoles is not empty %}
+        <div class="row g-4">
+            {% for benevole in allBenevoles %}
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 border-0 rounded-3">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-success fw-bold">{{ benevole.nom }}</h5>
+                            <p class="card-text mb-1">
+                                <i class="fas fa-envelope me-2 text-muted"></i>{{ benevole.email }}
+                            </p>
+                            <p class="card-text mb-3">
+                                <i class="fas fa-phone me-2 text-muted"></i>{{ benevole.telephone }}
+                            </p>
+                            <!-- Optionnel : Bouton pour plus d'infos -->
+                            <!--
+                            <button type="button" class="btn btn-success mt-auto"
+                                data-id="{{ benevole.id }}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#benevoleDetailsModal">
+                                Voir détails
+                            </button>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted fst-italic text-center">Aucun bénévole enregistré.</p>
+    {% endif %}
+</div>
+
+<!-- Modal pour détails bénévole (optionnel) -->
+<!--
+<div class="modal fade" id="benevoleDetailsModal" tabindex="-1" aria-labelledby="benevoleDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content shadow rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="benevoleDetailsModalLabel">Détails du bénévole</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <div id="benevoleModalContent">
+          <p class="text-center">Chargement...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+{% endblock %}

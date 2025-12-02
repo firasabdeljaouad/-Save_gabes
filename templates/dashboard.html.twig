@@ -627,16 +627,15 @@
         <nav class="sidebar-menu">
             <div class="menu-section">
                 <div class="menu-item">
-                    <a href="#" class="menu-link active">
+                    <a href="{{ path('app_dashboard') }}" class="menu-link {% if app.request.attributes.get('_route') == 'app_dashboard' %}active{% endif %}">
                         <span class="menu-icon material-symbols-rounded">dashboard</span>
                         <span class="menu-text">Dashboard</span>
-        </a>
-    </div>
+                    </a>
+                </div>
                 <div class="menu-item has-submenu" id="projetsMenu">
                     <a href="{{ path('app_list_projets') }}" class="menu-link" >
                         <span class="menu-icon material-symbols-rounded">folder</span>
                         <span class="menu-text">Projets</span>
-
                     </a>
                 </div>
                 <div class="menu-item">
@@ -650,7 +649,20 @@
                         <span class="menu-icon material-symbols-rounded">people</span>
                         <span class="menu-text">Donateurs</span>
                     </a>
+                </div>
+                <div class="menu-item">
+                    <a href="{{ path('app_benevoles_index') }}" class="menu-link {% if app.request.attributes.get('_route') starts with 'app_benevoles' %}active{% endif %}">
+                        <span class="menu-icon material-symbols-rounded">groups</span>
+                        <span class="menu-text">Bénévoles</span>
+                    </a>
+                </div>
+            <div class="menu-item">
+                                <a href="{{ path('app_activite_index') }}" class="menu-link {% if app.request.attributes.get('_route') starts with 'app_activite' %}active{% endif %}">
+                                    <span class="menu-icon material-symbols-rounded">groups</span>
+                                    <span class="menu-text">Activités</span>
+                                </a>
                             </div>
+
                 <div class="menu-item">
                     <a href="#" class="menu-link">
                         <span class="menu-icon material-symbols-rounded">event</span>
@@ -668,8 +680,8 @@
                         <span class="menu-icon material-symbols-rounded">volunteer_activism</span>
                         <span class="menu-text">Volunteer</span>
                     </a>
-                                        </div>
-                                    </div>
+                </div>
+            </div>
             <div class="menu-section">
                 <div class="menu-section-title">Compte</div>
                 <div class="menu-item">
@@ -684,8 +696,8 @@
                         <span class="menu-text">Déconnexion</span>
                     </a>
                 </div>
-        </div>
-    </nav>
+            </div>
+        </nav>
     </div>
 
     {# Sidebar Overlay for Mobile #}
@@ -744,7 +756,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
         </header>
 
         {# Content #}
@@ -788,15 +800,13 @@
         // Active Menu Item
         const menuLinks = document.querySelectorAll('.menu-link');
         menuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Don't prevent default for submenu items
-                if (!link.closest('.has-submenu')) {
-                    e.preventDefault();
-                    menuLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                }
+            link.addEventListener('click', () => {
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                // No e.preventDefault() here!
             });
         });
+
 
         // Submenu Toggle Function
         function toggleSubmenu(menuId) {
@@ -892,4 +902,5 @@
 
 {% block javascripts %}{% endblock %}
 </body>
+
 </html>

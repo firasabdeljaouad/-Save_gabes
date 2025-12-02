@@ -1,0 +1,55 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block page_title %}Détails de l’activité{% endblock %}
+{% block page_subtitle %}{{ activite.titre }}{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-4">
+                <h3 class="h5 mb-0 d-flex align-items-center gap-2">
+                    <span class="material-symbols-rounded text-primary">event</span>
+                    Informations de l’activité
+                </h3>
+                <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="btn btn-outline-warning btn-sm">
+                    <span class="material-symbols-rounded">edit</span> Modifier
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between py-3">
+                        <span class="fw-semibold">Titre</span>
+                        <span>{{ activite.titre }}</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between py-3">
+                        <span class="fw-semibold">Lieu</span>
+                        <span class="text-muted">{{ activite.lieu }}</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between py-3">
+                        <span class="fw-semibold">Date</span>
+                        <span class="text-muted">{{ activite.date|date('Y-m-d H:i') }}</span>
+                    </li>
+
+                    <li class="list-group-item py-3">
+                        <span class="fw-semibold">Description</span>
+                        <p class="mt-2 mb-0 text-muted">{{ activite.description }}</p>
+                    </li>
+                </ul>
+
+                <div class="mt-5 text-center">
+                    <a href="{{ path('app_activite_index') }}" class="btn btn-outline-secondary px-5">
+                        Retour à la liste
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

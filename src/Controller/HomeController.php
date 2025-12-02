@@ -6,16 +6,24 @@ use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\ActiviteRepository;
+use App\Repository\BenevoleRepository;
+
 
 final class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
-    public function index(): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+    #[Route('/', name: 'app_home')]
+        public function index(ActiviteRepository $activiteRepo, BenevoleRepository $benevoleRepo): Response
+        {
+            $latestActivites = $activiteRepo->findBy([], ['date' => 'DESC'], 3);
+            $latestBenevoles = $benevoleRepo->findBy([], ['id' => 'DESC'], 3);
+
+            return $this->render('home/index.html.twig', [
+                'latestActivites' => $latestActivites,
+                'latestBenevoles' => $latestBenevoles,
+                'controller_name' => 'HomeController',
+            ]);
+        }
     #[Route('/contact', name: 'app_contact')]
     public function contact(): Response
     {
