@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Symfony Website{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
@@ -22,7 +23,401 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ asset('css/table-dash.css') }}"/>
+=======
+    <link
+        rel="stylesheet" href="{{ asset('css/table-dash.css') }}"/>
+
+    <style>
+        /* Responsive Navbar Styles */
+        .header-area {
+            position: relative;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .header-top_area {
+            background: #f8f9fa;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .header-top_area .short_contact_list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-top_area .short_contact_list ul li {
+            margin: 0;
+        }
+
+        .header-top_area .short_contact_list ul li a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .header-top_area .short_contact_list ul li a:hover {
+            color: #55af55;
+        }
+
+        .header-top_area .short_contact_list ul li a i {
+            margin-right: 5px;
+        }
+
+        .social_media_links {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .social_media_links a {
+            color: #666;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .social_media_links a:hover {
+            color: #55af55;
+        }
+
+        .main-header-area {
+            background: #3CC78F;
+            border-radius: 10px;
+            padding: 15px 30px;
+            margin: 20px auto;
+            max-width: 95%;
+            position: relative;
+        }
+
+        .main-header-area .logo h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .main-header-area .logo a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .main-menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .main-menu nav {
+            flex: 1;
+        }
+
+        .main-menu #navigation {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .main-menu #navigation li {
+            position: relative;
+            margin: 0;
+        }
+
+        .main-menu #navigation li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .main-menu #navigation li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .main-menu #navigation li .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .main-menu #navigation li:hover .submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .main-menu #navigation li .submenu li {
+            width: 100%;
+        }
+
+        .main-menu #navigation li .submenu li a {
+            color: #333;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .main-menu #navigation li .submenu li a:hover {
+            background: #f8f9fa;
+            color: #55af55;
+        }
+
+        .Appointment {
+            margin-left: 20px;
+        }
+
+        .book_btn a {
+            background: white;
+            color: #3CC78F;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .book_btn a:hover {
+            background: #55af55;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mobile Menu Styles */
+        .mobile_menu {
+            display: none;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .main-header-area {
+                max-width: 98%;
+                padding: 15px 20px;
+            }
+
+            .main-menu #navigation li a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-header-area {
+                border-radius: 0;
+                margin: 0;
+                max-width: 100%;
+                padding: 15px;
+            }
+
+            .main-menu {
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
+                position: relative;
+                flex-wrap: nowrap;
+                gap: 10px;
+            }
+
+            .main-menu nav {
+                width: 100%;
+                display: none !important;
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                background: #3CC78F;
+                border-radius: 5px;
+                padding: 10px 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            .main-menu nav.active {
+                display: block !important;
+            }
+
+            .main-menu #navigation {
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
+            }
+
+            .main-menu #navigation li {
+                width: 100%;
+            }
+
+            .main-menu #navigation li a {
+                padding: 12px 15px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .main-menu #navigation li .submenu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 0;
+                margin-left: 20px;
+            }
+
+            .main-menu #navigation li .submenu li a {
+                padding: 10px 15px;
+            }
+
+            .mobile_menu {
+                display: block;
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            .Appointment {
+                margin-left: 10px;
+                margin-top: 0;
+                width: auto;
+            }
+
+            .book_btn {
+                width: auto;
+            }
+
+            .book_btn a {
+                width: auto;
+                text-align: center;
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .header-top_area .short_contact_list ul {
+                justify-content: center;
+            }
+
+            .social_media_links {
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top_area {
+                padding: 8px 0;
+            }
+
+            .header-top_area .short_contact_list ul {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .header-top_area .short_contact_list ul li a {
+                font-size: 12px;
+            }
+
+            .main-header-area .logo h2 {
+                font-size: 20px;
+            }
+
+            .main-header-area {
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-top_area .short_contact_list ul li a {
+                font-size: 11px;
+            }
+
+            .main-header-area .logo h2 {
+                font-size: 18px;
+            }
+
+            .book_btn a {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Sticky Header */
+        .main-header-area.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        /* Mobile Menu Toggle Button */
+        .mobile-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: auto;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .mobile-toggle {
+                display: block;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .main-menu .Appointment {
+                order: 2;
+                margin-left: 10px;
+                flex-shrink: 0;
+            }
+
+            .main-menu nav {
+                order: 4;
+            }
+        }
+    </style>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
 
     <!-- 🔥 تعديل طفيف باش يطلع Save gabes شوية -->
     <style>
@@ -70,52 +465,84 @@
         <div id="sticky-header" class="main-header-area">
             <div class="container-fluid">
                 <div class="row align-items-center">
+<<<<<<< HEAD
 
                     <div class="col-xl-3 col-lg-3">
+=======
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-6">
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                         <div class="logo">
-                            <a href="#">
-                                <h2 style="color: white;">Save gabes</h2>
+                            <a href="{{ path('app_home') }}">
+                                <h2 style="color: white; margin: 0;">Save gabes</h2>
                             </a>
                         </div>
                     </div>
+<<<<<<< HEAD
 
                     <div class="col-xl-9 col-lg-9">
+=======
+                    <div class="col-xl-9 col-lg-9 col-md-6 col-6">
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                         <div class="main-menu">
-                            <nav>
+                            <nav id="main-nav">
                                 <ul id="navigation">
-                                    <li><a href ="{{ path('app_home') }}">home</a></li>
+                                    <li><a href="{{ path('app_home') }}">Home</a></li>
                                     <li><a href="{{ path('app_about') }}">About</a></li>
+<<<<<<< HEAD
 
                                     <li><a href="#">blog <i class="ti-angle-down"></i></a>
+=======
+                                    <li><a href="#">Blog <i class="ti-angle-down"></i></a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                         <ul class="submenu">
-                                            <li><a href="{{ path('app_blog') }}">blog</a></li>
-                                            <li><a href="#">single-blog</a></li>
+                                            <li><a href="{{ path('app_blog') }}">Blog</a></li>
+                                            <li><a href="#">Single Blog</a></li>
                                         </ul>
                                     </li>
+<<<<<<< HEAD
 
                                     <li><a href="#">pages <i class="ti-angle-down"></i></a>
+=======
+                                    {#  <li><a href="#">Pages <i class="ti-angle-down"></i></a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                         <ul class="submenu">
-                                            <li><a href="#">elements</a></li>
+                                            <li><a href="#">Elements</a></li>
                                             <li><a href="#">Cause</a></li>
                                         </ul>
+<<<<<<< HEAD
                                     </li>
 
+=======
+                                    </li>#}
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                     <li><a href="{{ path('app_contact') }}">Contact</a></li>
+                                    <li><a href="{{ path('app_projets') }}">Our Project</a></li>
                                 </ul>
                             </nav>
 
                             <div class="Appointment">
+<<<<<<< HEAD
                                 <div class="book_btn d-none d-lg-block">
                                     <a href="{{ path('app_projets') }}">Our project</a>
+=======
+                                <div class="book_btn">
+                                    <a href="#">Login</a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                 </div>
                             </div>
+                            <button class="mobile-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                                <i class="fa fa-bars" id="menu-icon"></i>
+                            </button>
                         </div>
                     </div>
+<<<<<<< HEAD
 
                     <div class="col-12">
                         <div class="mobile_menu d-block d-lg-none"></div>
                     </div>
 
+=======
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                 </div>
             </div>
         </div>
@@ -227,5 +654,76 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const nav = document.getElementById('main-nav');
+        const icon = document.getElementById('menu-icon');
+        nav.classList.toggle('active');
+
+        // Change icon from bars to X when menu is open
+        if (nav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    }
+
+    // Close mobile menu when clicking outside or on a link
+    document.addEventListener('click', function(event) {
+        const nav = document.getElementById('main-nav');
+        const toggle = document.querySelector('.mobile-toggle');
+        const icon = document.getElementById('menu-icon');
+        const isClickInsideNav = nav.contains(event.target);
+        const isClickOnToggle = toggle && toggle.contains(event.target);
+
+        // Close menu if clicking outside
+        if (!isClickInsideNav && !isClickOnToggle && window.innerWidth <= 992) {
+            nav.classList.remove('active');
+            if (icon) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // Close menu when clicking on a navigation link (mobile only)
+        if (isClickInsideNav && window.innerWidth <= 992) {
+            const clickedLink = event.target.closest('a');
+            if (clickedLink && !clickedLink.closest('.submenu')) {
+                setTimeout(() => {
+                    nav.classList.remove('active');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }, 300);
+            }
+        }
+    });
+
+    // Sticky header on scroll
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('sticky-header');
+        if (window.scrollY > 100) {
+            header.classList.add('sticky');
+        } else {
+            header.classList.remove('sticky');
+        }
+    });
+
+    // Close mobile menu when window is resized to desktop
+    window.addEventListener('resize', function() {
+        const nav = document.getElementById('main-nav');
+        if (window.innerWidth > 992) {
+            nav.classList.remove('active');
+        }
+    });
+</script>
+
 </body>
 </html>
+
+
+

@@ -45,7 +45,15 @@ class DonationController extends AbstractController
     }
 
     #[Route('/list_donations/{id}', name: 'app_donations_details')]
+<<<<<<< HEAD
     public function show(ProjectRepository $projectRepository, DonationRepository $donationRepository, int $id): Response
+=======
+    public function show(
+        DonationRepository $donationRepository,
+        ProjectRepository $projectRepository,
+        int $id
+    ): Response
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
     {
         $project = $projectRepository->find($id);
 
@@ -53,9 +61,14 @@ class DonationController extends AbstractController
             throw $this->createNotFoundException("Le projet avec l'ID $id n'existe pas.");
         }
 
+<<<<<<< HEAD
         $donations = $donationRepository->findBy([
             'project' => $project,
         ]);
+=======
+        // Fetch donations for this project
+        $donations = $donationRepository->findByProjectOrderByAmountDesc($id);
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
 
         return $this->render('cause_details/donation_list_by_id.html.twig', [
             'donations' => $donations,

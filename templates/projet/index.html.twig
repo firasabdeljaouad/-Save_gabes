@@ -10,6 +10,39 @@
         <div class="container">
             <div class="row">
 
+                <form method="get" action = "{{path('app_projets')  }}" class="row g-3">
+                    <div class="col-md-4 mb-5">
+                        <label for="search" class="form-label">Search by title or description</label>
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Rechercher..."
+                               value="{{ currentFilters.search is defined ? currentFilters.search : '' }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status"  id="status" class="form-select">
+                            <option value="">Statut</option>
+                            <option value="Active" {{ (currentFilters.status is defined and currentFilters.status == 'Active') ? 'selected' : '' }}>Active</option>
+                            <option value="terminé" {{ (currentFilters.status is defined and currentFilters.status == 'terminé') ? 'selected' : '' }}>Terminé</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label >Start After</label>
+                        <input type="date" name="date_from" class="form-control"
+                               value="{{ currentFilters.date_from is defined ? currentFilters.date_from : '' }}" placeholder="Date début">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="date_from" class="form-label">End before</label>
+                        <input type="date" id="date_from" name="date_to" class="form-control"
+                               value="{{ currentFilters.date_to is defined ? currentFilters.date_to : '' }}" placeholder="Date fin">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fa fa-search" aria-hidden="true"></i> Filtrer
+                        </button>
+                    </div>
+                </form>
+                <br>
+                <br>
+
                 {% for projet in projets %}
                     <div class="col-lg-4 col-md-6">
                         <div class="single_cause">
@@ -26,14 +59,14 @@
                                 </div>
 
                                 <div class="balance d-flex justify-content-between align-items-center">
-                                    <span>Goal: {{ projet.TargetAmount }} </span>
+                                    <span>Goal:$ {{ projet.TargetAmount }} </span>
                                 </div>
 
                                 <b>Start : {{ projet.startDate|date('Y-m-d') }}</b>
                                 <b>End : {{ projet.endDate|date('Y-m-d') }}</b>
                                 <br>
 
-                                <a href="cause_details.html"><h4>{{ projet.name }}</h4></a>
+                                <h4>{{ projet.name }}</h4>
                                 <p>{{ projet.description }}</p>
                                 <a class="read_more" href="{{ path('app_cause_details', { id: projet.id }) }}">Read More</a>
                                 <br>
@@ -43,10 +76,13 @@
                         </div>
                     </div>
                 {% endfor %}
+                {{ knp_pagination_render(projets) }}
 
             </div>
         </div>
     </div>
+
+
     <!-- popular_causes_area_end  -->
 
 {% endblock %}

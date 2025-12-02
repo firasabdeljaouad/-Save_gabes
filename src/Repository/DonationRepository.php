@@ -16,6 +16,16 @@ class DonationRepository extends ServiceEntityRepository
         parent::__construct($registry, Donation::class);
     }
 
+    public function findByProjectOrderByAmountDesc(int $projectId): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.project = :projectId')
+            ->setParameter('projectId', $projectId)
+            ->orderBy('d.amount', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Donation[] Returns an array of Donation objects
     //     */
