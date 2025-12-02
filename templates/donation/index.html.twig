@@ -1,56 +1,244 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DonationController!{% endblock %}
+{% block title %}Make a Donation{% endblock %}
 
 {% block body %}
-    <div data-scroll-index='1' class="make_donation_area section_padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="section_title text-center mb-55">
-                        <h3><span>Make a Donation</span></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    {{ form_start(form, {'attr': {'class': 'donation_form'}}) }}
-                    <div class="row align-items-center">
-                        <div class="col-md-4">
-                            {{ form_row(form.name) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(form.amount) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(form.paymentMethod) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(form.status) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(form.transactionId) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(form.isAnonymous) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="donate_now_btn text-center">
-                                {{ form_widget(form.donateNow, {
-                                    'label': 'Donate Now', 'attr':
-                                    {'class': 'boxed-btn4'}
+<style>
+    .donation-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
 
-                                })
-                                }}
-                            </div>
-                        </div>
-                    </div>
-                    {{ form_end(form) }}
+    .donation-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 50px;
+        max-width: 600px;
+        width: 100%;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .donation-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .donation-header h1 {
+        color: #333;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .donation-header p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #55af55;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(85, 175, 85, 0.1);
+    }
+
+    select.form-control {
+        cursor: pointer;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .form-check-label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 400;
+    }
+
+    .btn-donate {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #a6ea66 0%, #3fb656 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        position: relative;
+    }
+
+    .btn-donate::before {
+        content: '\f004';
+        font-family: 'FontAwesome';
+        margin-right: 8px;
+    }
+
+    .btn-donate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(163, 234, 102, 0.4);
+    }
+
+    .btn-donate:active {
+        transform: translateY(0);
+    }
+
+    .alert {
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .alert-danger {
+        background-color: #fee;
+        border: 1px solid #fcc;
+        color: #c33;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-row-full {
+        grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .donation-card {
+            padding: 30px 20px;
+        }
+
+        .donation-header h1 {
+            font-size: 26px;
+        }
+    }
+</style>
+
+<div class="donation-container">
+    <div class="donation-card">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="donation-header">
+                <h1>Make a Donation</h1>
+                <p>Help us make a difference in the community</p>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.name.vars.id }}">
+                        <i class="fa fa-user"></i> Full Name
+                    </label>
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your full name'}}) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.amount.vars.id }}">
+                        <i class="fa fa-dollar"></i> Amount
+                    </label>
+                    {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Enter amount'}}) }}
+                    {{ form_errors(form.amount) }}
                 </div>
             </div>
-        </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.paymentMethod.vars.id }}">
+                        <i class="fa fa-credit-card"></i> Payment Method
+                    </label>
+                    {{ form_widget(form.paymentMethod, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.paymentMethod) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.status.vars.id }}">
+                        <i class="fa fa-info-circle"></i> Status
+                    </label>
+                    {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.status) }}
+                </div>
+            </div>
+
+            <div class="form-group form-row-full">
+                <label for="{{ form.transactionId.vars.id }}">
+                    <i class="fa fa-hashtag"></i> Transaction ID
+                </label>
+                {{ form_widget(form.transactionId, {'attr': {'class': 'form-control', 'placeholder': 'Enter transaction ID (optional)'}}) }}
+                {{ form_errors(form.transactionId) }}
+            </div>
+
+            <div class="form-group form-row-full">
+                <div class="form-check">
+                    {{ form_widget(form.isAnonymous, {'attr': {'class': 'form-check-input'}}) }}
+                    <label class="form-check-label" for="{{ form.isAnonymous.vars.id }}">
+                        Make this donation anonymous
+                    </label>
+                </div>
+                {{ form_errors(form.isAnonymous) }}
+            </div>
+
+            {{ form_widget(form.donateNow, {
+                'label': 'Donate Now',
+                'attr': {'class': 'btn-donate'}
+            }) }}
+        {{ form_end(form) }}
     </div>
-
+</div>
 {% endblock %}

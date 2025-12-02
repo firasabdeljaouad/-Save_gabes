@@ -46,7 +46,7 @@
 
                                 <span>Goal: ${{ projet.TargetAmount }} </span>
                             </div>
-                            <h4>Clothes For Everyone</h4>
+                            <h4>{{ projet.name }}</h4>
                             <p>{{ projet.alldescription }}</p>
                              </div>
                         <a href="{{ path('app_donations_details', {'id': projet.id}) }}">list donation </a>

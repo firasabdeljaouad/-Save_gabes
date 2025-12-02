@@ -18,21 +18,18 @@ class Donation
     private ?int $id = null;
 
     #[ORM\Column(type:'float')]
-    #[Assert\NotBlank(message: "Amount est obligatoire.")]
-    #[Assert\Regex(
-        pattern: '/^[0-9]+$/',
-        message: 'Ce champ ne doit contenir que des nombres.'
-    )]
+    #[Assert\NotBlank(message: "Amount is mandatory.")]
+
     private ?float $amount = null;
 
-    #[Assert\NotBlank(message: "le method de payment est obligatoire.")]
+    #[Assert\NotBlank(message: "The payment method is mandatory.")]
     #[ORM\Column(length: 50)]
     private ?string $paymentMethod = null;
-    #[Assert\NotBlank(message: "Status est obligatoire.")]
+    #[Assert\NotBlank(message: "Status obligatory.")]
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
-    #[Assert\NotBlank(message: "transaction est obligatoire.")]
+    #[Assert\NotBlank(message: "transaction is mandatory.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $transactionId = null;
 
@@ -50,6 +47,7 @@ class Donation
     private Collection $donaters;
 
     #[ORM\Column(length: 120)]
+    #[Assert\NotBlank(message: "Name is required.")]
     private ?string $name = null;
 
     public function __construct()
