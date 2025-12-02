@@ -6,6 +6,8 @@ use App\Repository\DonationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Float_;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
 class Donation
@@ -15,15 +17,19 @@ class Donation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
-    private ?string $amount = null;
+    #[ORM\Column(type:'float')]
+    #[Assert\NotBlank(message: "Amount is mandatory.")]
 
+    private ?float $amount = null;
+
+    #[Assert\NotBlank(message: "The payment method is mandatory.")]
     #[ORM\Column(length: 50)]
     private ?string $paymentMethod = null;
-
+    #[Assert\NotBlank(message: "Status obligatory.")]
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
+    #[Assert\NotBlank(message: "transaction is mandatory.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $transactionId = null;
 
@@ -39,6 +45,10 @@ class Donation
      */
     #[ORM\OneToMany(targetEntity: Donater::class, mappedBy: 'donations')]
     private Collection $donaters;
+
+    #[ORM\Column(length: 120)]
+    #[Assert\NotBlank(message: "Name is required.")]
+    private ?string $name = null;
 
     public function __construct()
     {
@@ -150,6 +160,18 @@ class Donation
                 $donater->setDonations(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DonaterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonaterRepository::class)]
 class Donater
@@ -14,6 +15,7 @@ class Donater
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "le nom est obligatoire.")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 100)]
