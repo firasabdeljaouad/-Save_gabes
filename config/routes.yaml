@@ -1,3 +1,14 @@
+# Custom admin routes - loaded before EasyAdmin to ensure priority
+admin_user:
+    resource: ../src/Controller/Admin/AdminUserController.php
+    type: attribute
+    prefix: /admin
+
+admin_dashboard:
+    resource: ../src/Controller/Admin/AdminDashboardController.php
+    type: attribute
+    prefix: /admin
+
 controllers:
     resource:
         path: ../src/Controller/

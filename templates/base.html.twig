@@ -38,8 +38,13 @@
 </head>
 
 <body>
+
+
 <!-- 🌐 Navbar -->
+{% if app.request.get('_route') != 'app_login' and app.request.get('_route') != 'app_register' %}
+
 <header>
+
     <div class="header-area">
         <div class="header-top_area">
             <div class="container-fluid">
@@ -96,8 +101,43 @@
                                 </ul>
                             </nav>
                             <div class="Appointment">
-                                <div class="book_btn d-none d-lg-block">
-                                    <a data-scroll-nav="1" href={{ path('app_projets')}}  >Our project</a>
+                                <div class="d-none d-lg-block">
+                                    {% if app.user %}
+                                        <div class="dropdown">
+                                            <button class="btn btn-success dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #28a745; border-color: #28a745; color: white; padding: 8px 20px; border-radius: 5px; font-weight: 500;">
+                                                {% if app.user.avatar %}
+                                                    <img src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" alt="Avatar" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                                                {% else %}
+                                                    <i class="fa fa-user-circle" style="margin-right: 8px;"></i>
+                                                {% endif %}
+                                                {{ app.user.firstName }} {{ app.user.lastName }}
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 8px;">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('app_profile') }}" style="padding: 10px 20px;">
+                                                        <i class="fa fa-user-circle" style="color: #28a745; margin-right: 10px;"></i> My Profile
+                                                    </a>
+                                                </li>
+                                                {% if 'ROLE_ADMIN' in app.user.roles %}
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('dashboard') }}" style="padding: 10px 20px;">
+                                                            <i class="fa fa-dashboard" style="color: #28a745; margin-right: 10px;"></i> Admin Dashboard
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('app_logout') }}" style="padding: 10px 20px; color: #dc3545;">
+                                                        <i class="fa fa-sign-out" style="margin-right: 10px;"></i> Logout
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ path('app_login') }}" class="btn btn-success" style="background-color: #28a745; border-color: #28a745; color: white; padding: 8px 20px; border-radius: 5px; font-weight: 500; text-decoration: none;">
+                                            <i class="fa fa-sign-in" style="margin-right: 8px;"></i>Login
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -112,112 +152,20 @@
 
     </div>
 </header>
+{% endif %}
 
 <!-- 🔹 Main Content -->
-<main class="container mt-4">
+
+<main style="{% if app.request.get('_route') == 'app_login' or app.request.get('_route') == 'app_register' %}min-height: 100vh; display:flex; justify-content:center; align-items:center; background-color:#f0f8f5;{% endif %}">
     {% block body %}{% endblock %}
 </main>
 
+
 <!-- 🔻 FOOTER -->
-<footer class="footer">
-    <div class="footer_top">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-xl-4 col-md-6 col-lg-4">
-                    <div class="footer_widget">
-                        <div class="footer_logo">
-                            <a href="#">
-                                <h2>Save gabes</h2>
-                            </a>
-                        </div>
-                        <p class="address_text">
-                            Lorem ipsum dolor sit amet, <br>
-                            consectetur adipiscing elit, sed do <br>
-                            eiusmod tempor incididunt ut labore.
-                        </p>
-                        <div class="socail_links">
-                            <ul>
-                                <li><a href="#"><i class="ti-facebook"></i></a></li>
-                                <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-2 col-md-6 col-lg-2">
-                    <div class="footer_widget">
-                        <h3 class="footer_title">Services</h3>
-                        <ul class="links">
-                            <li><a href="#">Donate</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Volunteer</a></li>
-                            <li><a href="#">Events</a></li>
-
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6 col-lg-3">
-                    <div class="footer_widget">
-                        <h3 class="footer_title">Contacts</h3>
-                        <div class="contacts">
-                            <p>
-                                +2(305) 587-3407 <br>
-                                info@gmail.com <br>
-                                Flat 20, Reynolds Neck, North Helenaville, FV77 8WS
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6 col-lg-3">
-                    <div class="footer_widget">
-                        <h3 class="footer_title">Top News</h3>
-                        <ul class="news_links">
-                            <li>
-                                <div class="thumb">
-                                    <a href="#"><img src="{{ asset('img/news/news_1.png')  }}" alt=""></a>
-                                </div>
-                                <div class="info">
-                                    <a href="#"><h4>save world</h4></a>
-                                    <span>Jun 12, 2019</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="thumb">
-                                    <a href="#"><img src="{{ asset('img/news/news_2.png')  }}" alt=""></a>
-                                </div>
-                                <div class="info">
-                                    <a href="#"><h4>save world</h4></a>
-                                    <span>Jun 12, 2023</span>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="copy-right_text">
-        <div class="container">
-            <div class="row">
-                <div class="bordered_1px"></div>
-                <div class="col-xl-12">
-                    <p class="copy_right text-center">
-                        &copy; {{ "now"|date("Y") }} My Symfony Website. All rights reserved.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+{# Footer - caché sur login #}
+{% if app.request.get('_route') != 'app_login' %}
+    {% include 'partials/footer.html.twig' %}
+{% endif %}
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

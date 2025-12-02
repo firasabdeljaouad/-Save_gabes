@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile - Save Gabes{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 100px; margin-bottom: 50px;">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
+                <!-- Header with gradient -->
+                <div class="card-header text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 30px;">
+                    <div class="d-flex align-items-center">
+                        <div class="profile-avatar-container me-4">
+                            {% if user.avatar %}
+                                <img src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="Profile Picture" 
+                                     class="profile-avatar" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                            {% else %}
+                                <div class="profile-avatar-placeholder" style="width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                                    <i class="fa fa-user-circle" style="font-size: 60px; color: white;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h2 class="mb-1" style="font-weight: 600;">{{ user.firstName }} {{ user.lastName }}</h2>
+                            <p class="mb-0" style="opacity: 0.9;"><i class="fa fa-envelope"></i> {{ user.email }}</p>
+                            <p class="mb-0 mt-2">
+                                <span class="badge" style="background-color: rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 20px;">
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <i class="fa fa-shield"></i> Administrator
+                                    {% else %}
+                                        <i class="fa fa-user"></i> User
+                                    {% endif %}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="padding: 40px;">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 10px; border: none;">
+                            <i class="fa fa-check-circle"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 10px; border: none;">
+                            <i class="fa fa-exclamation-circle"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+
+                    {{ form_start(profileForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="mb-3" style="color: #28a745; font-weight: 600;">
+                                <i class="fa fa-image"></i> Profile Picture
+                            </h5>
+                            <div class="mb-3">
+                                {{ form_label(profileForm.avatarFile) }}
+                                {{ form_widget(profileForm.avatarFile, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px;'}}) }}
+                                {{ form_errors(profileForm.avatarFile) }}
+                                <small class="form-text text-muted">Upload a new profile picture (JPG, PNG, GIF - Max 5MB)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" style="border-color: #e0e0e0;">
+
+                    <h5 class="mb-4" style="color: #28a745; font-weight: 600;">
+                        <i class="fa fa-user"></i> Personal Information
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(profileForm.firstName, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                            {{ form_widget(profileForm.firstName, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                            {{ form_errors(profileForm.firstName) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(profileForm.lastName, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                            {{ form_widget(profileForm.lastName, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                            {{ form_errors(profileForm.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(profileForm.email, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                            {{ form_widget(profileForm.email, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                            {{ form_errors(profileForm.email) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(profileForm.phoneNumber, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                            {{ form_widget(profileForm.phoneNumber, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                            {{ form_errors(profileForm.phoneNumber) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(profileForm.sexe, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                            {{ form_widget(profileForm.sexe, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                            {{ form_errors(profileForm.sexe) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-weight: 500; color: #333;">Status</label>
+                            <input type="text" class="form-control" value="{{ user.status|capitalize }}" disabled style="border-radius: 8px; border: 1px solid #ddd; padding: 10px; background-color: #f8f9fa;">
+                            <small class="form-text text-muted">Status cannot be changed from profile page</small>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" style="border-color: #e0e0e0;">
+
+                    <h5 class="mb-4" style="color: #28a745; font-weight: 600;">
+                        <i class="fa fa-lock"></i> Security
+                    </h5>
+
+                    <div class="mb-3">
+                        {{ form_label(profileForm.plainPassword, null, {'label_attr': {'class': 'form-label', 'style': 'font-weight: 500; color: #333;'}}) }}
+                        {{ form_widget(profileForm.plainPassword, {'attr': {'class': 'form-control', 'style': 'border-radius: 8px; border: 1px solid #ddd; padding: 10px;'}}) }}
+                        {{ form_errors(profileForm.plainPassword) }}
+                        <small class="form-text text-muted">Leave blank to keep your current password</small>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg" style="background-color: #28a745; border-color: #28a745; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 16px;">
+                            <i class="fa fa-save"></i> Update Profile
+                        </button>
+                    </div>
+
+                    {{ form_end(profileForm) }}
+
+                    <hr class="my-4" style="border-color: #e0e0e0;">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="color: #28a745; font-weight: 600; margin-bottom: 20px;">
+                                <i class="fa fa-info-circle"></i> Account Information
+                            </h5>
+                            <div class="info-card" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                                <p class="mb-2"><strong><i class="fa fa-calendar" style="color: #28a745;"></i> Account Created:</strong> {{ user.createdAt|date('F d, Y') }}</p>
+                                <p class="mb-2"><strong><i class="fa fa-clock" style="color: #28a745;"></i> Last Updated:</strong> {{ user.updatedAt|date('F d, Y H:i') }}</p>
+                                <p class="mb-0"><strong><i class="fa fa-shield" style="color: #28a745;"></i> Role:</strong> 
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <span class="badge bg-danger">Administrator</span>
+                                    {% else %}
+                                        <span class="badge bg-primary">User</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: #28a745; font-weight: 600; margin-bottom: 20px;">
+                                <i class="fa fa-bolt"></i> Quick Actions
+                            </h5>
+                            <div class="d-grid gap-2">
+                                <a href="{{ path('app_home') }}" class="btn btn-outline-success" style="border-radius: 8px; padding: 10px; border-color: #28a745; color: #28a745;">
+                                    <i class="fa fa-home"></i> Go to Home
+                                </a>
+                                {% if 'ROLE_ADMIN' in user.roles %}
+                                    <a href="{{ path('dashboard') }}" class="btn btn-outline-success" style="border-radius: 8px; padding: 10px; border-color: #28a745; color: #28a745;">
+                                        <i class="fa fa-dashboard"></i> Admin Dashboard
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    .btn-success:hover {
+        background-color: #218838 !important;
+        border-color: #1e7e34 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+    .profile-avatar {
+        transition: transform 0.3s ease;
+    }
+    .profile-avatar:hover {
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}

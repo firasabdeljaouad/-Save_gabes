@@ -79,6 +79,8 @@
             z-index: 1000;
             transition: transform 0.3s ease;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-header {
@@ -109,7 +111,10 @@
         }
 
         .sidebar-menu {
-            padding: 1rem 0;
+            padding: 1rem 0 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .menu-section {
@@ -229,6 +234,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(248, 250, 252, 0.9);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .sidebar-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar-action-btn.logout {
+            background: linear-gradient(135deg, #f8b4d9, #f472b6);
+        }
+
+        .sidebar-action-btn.home {
+            background: linear-gradient(135deg, #a5f3fc, #67e8f9);
+            color: #0f172a;
         }
 
         /* Main Content */
@@ -627,11 +670,17 @@
         <nav class="sidebar-menu">
             <div class="menu-section">
                 <div class="menu-item">
-                    <a href="#" class="menu-link active">
+                    <a href="{{ path('admin_dashboard') }}" class="menu-link active">
                         <span class="menu-icon material-symbols-rounded">dashboard</span>
                         <span class="menu-text">Dashboard</span>
-        </a>
-    </div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="{{ path('admin_user_index') }}" class="menu-link">
+                        <span class="menu-icon material-symbols-rounded">group</span>
+                        <span class="menu-text">Users</span>
+                    </a>
+                </div>
                 <div class="menu-item has-submenu" id="projetsMenu">
                     <a href="{{ path('app_list_projets') }}" class="menu-link" >
                         <span class="menu-icon material-symbols-rounded">folder</span>
@@ -673,19 +722,23 @@
             <div class="menu-section">
                 <div class="menu-section-title">Compte</div>
                 <div class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{ path('app_profile') }}" class="menu-link">
                         <span class="menu-icon material-symbols-rounded">person</span>
                         <span class="menu-text">Profile</span>
                     </a>
                 </div>
-                <div class="menu-item">
-                    <a href="#" class="menu-link">
-                        <span class="menu-icon material-symbols-rounded">logout</span>
-                        <span class="menu-text">Déconnexion</span>
-                    </a>
-                </div>
         </div>
     </nav>
+        <div class="sidebar-footer">
+            <a href="{{ path('app_home') }}" class="sidebar-action-btn home">
+                <span class="material-symbols-rounded">home</span>
+                <span>Back Home</span>
+            </a>
+            <a href="{{ path('app_logout') }}" class="sidebar-action-btn logout">
+                <span class="material-symbols-rounded">logout</span>
+                <span>Logout</span>
+            </a>
+        </div>
     </div>
 
     {# Sidebar Overlay for Mobile #}
@@ -785,18 +838,24 @@
             sidebarOverlay.classList.remove('active');
         });
 
-        // Active Menu Item
-        const menuLinks = document.querySelectorAll('.menu-link');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Don't prevent default for submenu items
-                if (!link.closest('.has-submenu')) {
-                    e.preventDefault();
-                    menuLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
+        // Active Menu Item - Set based on current URL
+        function setActiveMenu() {
+            const currentPath = window.location.pathname;
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(link => {
+                try {
+                    const linkPath = new URL(link.href).pathname;
+                    if (currentPath === linkPath || currentPath.startsWith(linkPath + '/')) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                } catch (e) {
+                    // Ignore errors for relative URLs
                 }
             });
-        });
+        }
+        setActiveMenu();
 
         // Submenu Toggle Function
         function toggleSubmenu(menuId) {
@@ -891,5 +950,6 @@
 </script>
 
 {% block javascripts %}{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
