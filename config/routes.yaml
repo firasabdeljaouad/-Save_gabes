@@ -10,10 +10,5 @@ admin_dashboard:
     prefix: /admin
 
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-        app_article_show:
-            path: /article/{id}
-            controller: App\Controller\ProjetController::show
+    resource: ../src/Controller/
     type: attribute

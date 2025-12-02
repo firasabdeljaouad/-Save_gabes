@@ -6,32 +6,26 @@
     <title>{% block title %}My Symfony Website{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    />
-    <!-- FontAwesome (required for icons) -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link
-        rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
-    <link
-        rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
-    <link
-        rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}"/>
-    <link
-        rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/nice-select.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/flaticon.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/gijgo.css') }}"
-    />
-    <link
-        rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/gijgo.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{ asset('css/table-dash.css') }}"/>
+=======
     <link
         rel="stylesheet" href="{{ asset('css/table-dash.css') }}"/>
 
@@ -423,13 +417,26 @@
             }
         }
     </style>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
 
+    <!-- 🔥 تعديل طفيف باش يطلع Save gabes شوية -->
+    <style>
+        header .main-header-area {
+            padding-top: 10px !important;
+        }
+        header .logo h2 {
+            margin-top: 5px !important;
+        }
+    </style>
 </head>
 
 <body>
+
 <!-- 🌐 Navbar -->
 <header>
     <div class="header-area">
+
+        <!-- Top bar -->
         <div class="header-top_area">
             <div class="container-fluid">
                 <div class="row">
@@ -441,6 +448,7 @@
                             </ul>
                         </div>
                     </div>
+
                     <div class="col-xl-6 col-md-6 col-lg-4">
                         <div class="social_media_links d-none d-lg-block">
                             <a href="#"><i class="fa fa-facebook"></i></a>
@@ -453,41 +461,73 @@
             </div>
         </div>
 
+        <!-- Main header -->
         <div id="sticky-header" class="main-header-area">
             <div class="container-fluid">
                 <div class="row align-items-center">
+<<<<<<< HEAD
+
+                    <div class="col-xl-3 col-lg-3">
+=======
                     <div class="col-xl-3 col-lg-3 col-md-6 col-6">
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                         <div class="logo">
                             <a href="{{ path('app_home') }}">
                                 <h2 style="color: white; margin: 0;">Save gabes</h2>
                             </a>
                         </div>
                     </div>
+<<<<<<< HEAD
+
+                    <div class="col-xl-9 col-lg-9">
+=======
                     <div class="col-xl-9 col-lg-9 col-md-6 col-6">
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                         <div class="main-menu">
                             <nav id="main-nav">
                                 <ul id="navigation">
                                     <li><a href="{{ path('app_home') }}">Home</a></li>
                                     <li><a href="{{ path('app_about') }}">About</a></li>
+<<<<<<< HEAD
+
+                                    <li><a href="#">blog <i class="ti-angle-down"></i></a>
+=======
                                     <li><a href="#">Blog <i class="ti-angle-down"></i></a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                         <ul class="submenu">
                                             <li><a href="{{ path('app_blog') }}">Blog</a></li>
                                             <li><a href="#">Single Blog</a></li>
                                         </ul>
                                     </li>
+<<<<<<< HEAD
+
+                                    <li><a href="#">pages <i class="ti-angle-down"></i></a>
+=======
                                     {#  <li><a href="#">Pages <i class="ti-angle-down"></i></a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                         <ul class="submenu">
                                             <li><a href="#">Elements</a></li>
                                             <li><a href="#">Cause</a></li>
                                         </ul>
+<<<<<<< HEAD
+                                    </li>
+
+=======
                                     </li>#}
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                     <li><a href="{{ path('app_contact') }}">Contact</a></li>
                                     <li><a href="{{ path('app_projets') }}">Our Project</a></li>
                                 </ul>
                             </nav>
+
                             <div class="Appointment">
+<<<<<<< HEAD
+                                <div class="book_btn d-none d-lg-block">
+                                    <a href="{{ path('app_projets') }}">Our project</a>
+=======
                                 <div class="book_btn">
                                     <a href="#">Login</a>
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                                 </div>
                             </div>
                             <button class="mobile-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
@@ -495,19 +535,26 @@
                             </button>
                         </div>
                     </div>
+<<<<<<< HEAD
+
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+
+=======
+>>>>>>> 1e1f1f665f72710991d480fe35a9d7651614baf9
                 </div>
             </div>
         </div>
-
     </div>
 </header>
 
-<!-- 🔹 Main Content -->
-<main class="container mt-4">
+<!-- 🔹 Main content -->
+<main class="container mt-5">
     {% block body %}{% endblock %}
 </main>
 
-<!-- 🔻 FOOTER -->
+<!-- 🔻 Footer -->
 <footer class="footer">
     <div class="footer_top">
         <div class="container">
@@ -516,9 +563,7 @@
                 <div class="col-xl-4 col-md-6 col-lg-4">
                     <div class="footer_widget">
                         <div class="footer_logo">
-                            <a href="#">
-                                <h2>Save gabes</h2>
-                            </a>
+                            <a href="#"><h2>Save gabes</h2></a>
                         </div>
                         <p class="address_text">
                             Lorem ipsum dolor sit amet, <br>
@@ -544,7 +589,6 @@
                             <li><a href="#">Blog</a></li>
                             <li><a href="#">Volunteer</a></li>
                             <li><a href="#">Events</a></li>
-
                         </ul>
                     </div>
                 </div>
@@ -568,7 +612,7 @@
                         <ul class="news_links">
                             <li>
                                 <div class="thumb">
-                                    <a href="#"><img src="{{ asset('img/news/news_1.png')  }}" alt=""></a>
+                                    <a href="#"><img src="{{ asset('img/news/news_1.png') }}" alt=""></a>
                                 </div>
                                 <div class="info">
                                     <a href="#"><h4>save world</h4></a>
@@ -578,7 +622,7 @@
 
                             <li>
                                 <div class="thumb">
-                                    <a href="#"><img src="{{ asset('img/news/news_2.png')  }}" alt=""></a>
+                                    <a href="#"><img src="{{ asset('img/news/news_2.png') }}" alt=""></a>
                                 </div>
                                 <div class="info">
                                     <a href="#"><h4>save world</h4></a>
@@ -608,7 +652,6 @@
     </div>
 </footer>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
