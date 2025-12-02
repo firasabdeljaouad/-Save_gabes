@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du bénévole{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h1>Détails du bénévole</h1>
+
+        <ul>
+            <li><strong>ID :</strong> {{ benevole.id }}</li>
+            <li><strong>Nom :</strong> {{ benevole.nom }}</li>
+            <li><strong>Email :</strong> {{ benevole.email }}</li>
+            <li><strong>Téléphone :</strong> {{ benevole.telephone }}</li>
+        </ul>
+
+        <a href="{{ path('app_benevoles_index') }}" class="btn btn-secondary mt-3">⬅ Retour</a>
+        <a href="{{ path('app_benevoles_edit', {id: benevole.id}) }}" class="btn btn-warning mt-3">Modifier</a>
+
+        <form method="post"
+              action="{{ path('app_benevoles_delete', {id: benevole.id}) }}"
+              onsubmit="return confirm('Voulez-vous vraiment supprimer ce bénévole ?');"
+              style="display:inline-block">
+
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ benevole.id) }}">
+            <button class="btn btn-danger mt-3">Supprimer</button>
+        </form>
+
+    </div>
+{% endblock %}

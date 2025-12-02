@@ -4,25 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Donation;
 use App\Entity\Project;
-
 use App\Form\DonationFormType;
-use App\Repository\DonaterRepository;
 use App\Repository\DonationRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
-final class DonationController extends AbstractController
+class DonationController extends AbstractController
 {
     #[Route('/donation', name: 'app_donation')]
     public function index(): Response
     {
-        return $this->render('donation/index.html.twig', [
-            'controller_name' => 'DonationController',
-        ]);
+        return $this->render('donation/index.html.twig');
     }
 
     #[Route('/project/{id}/donate', name: 'app_project_donate')]
@@ -48,32 +44,22 @@ final class DonationController extends AbstractController
         ]);
     }
 
-    #[Route('/list_donation', name: 'app_list_donation')]
-    public function list(DonationRepository  $donationRepository): Response
-    {
-        $donations = $donationRepository->findAll();
-        return $this->render('donation/donation_list.html.twig', [
-            'donations' => $donations,
-        ]);
-    }
-
     #[Route('/list_donations/{id}', name: 'app_donations_details')]
-    public function show(DonationRepository $donationRepository, ProjectRepository $projectRepository, int $id): Response
+    public function show(ProjectRepository $projectRepository, DonationRepository $donationRepository, int $id): Response
     {
-        // Fetch the project
-        $projet = $projectRepository->find($id);
+        $project = $projectRepository->find($id);
 
-        if (!$projet) {
-            throw $this->createNotFoundException('Le projet avec l\'ID ' . $id . ' n\'existe pas.');
+        if (!$project) {
+            throw $this->createNotFoundException("Le projet avec l'ID $id n'existe pas.");
         }
 
-        // Fetch donations for this project
-        $donations = $donationRepository->findBy(['project' => $id]);
+        $donations = $donationRepository->findBy([
+            'project' => $project,
+        ]);
 
         return $this->render('cause_details/donation_list_by_id.html.twig', [
             'donations' => $donations,
-            'projet' => $projet,  // Add this
+            'project'   => $project,
         ]);
     }
-
 }
