@@ -19,8 +19,12 @@ class AdminUserController extends AbstractController
     #[Route('/admin/user', name: 'admin_user_index', priority: 255)]
     public function index(UserRepository $userRepository): Response
     {
-        // Get all users for the list only
-        $users = $userRepository->findAll();
+        // Get only active users (not deleted)
+        $users = $userRepository->createQueryBuilder('u')
+            ->where('u.deletedAt IS NULL')
+            ->orderBy('u.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('admin/user/index.html.twig', [
             'users' => $users,
@@ -112,12 +116,66 @@ class AdminUserController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete_user_'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
+            // Soft delete: set deletedAt instead of removing
+            $user->setDeletedAt(new \DateTime());
             $entityManager->flush();
-            $this->addFlash('success', 'User deleted successfully.');
+            $this->addFlash('success', 'User moved to trash successfully.');
         }
 
         return $this->redirectToRoute('admin_user_index');
+    }
+
+    #[Route('/admin/users/{id}/restore', name: 'admin_user_restore', methods: ['POST'], priority: 255, requirements: ['id' => '\d+'])]
+    public function restore(int $id, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($id);
+        if (!$user) {
+            $this->addFlash('error', 'User with ID ' . $id . ' not found.');
+            return $this->redirectToRoute('admin_user_trash');
+        }
+
+        if ($this->isCsrfTokenValid('restore_user_'.$user->getId(), $request->request->get('_token'))) {
+            // Restore: remove deletedAt
+            $user->setDeletedAt(null);
+            $entityManager->flush();
+            $this->addFlash('success', 'User restored successfully.');
+        }
+
+        return $this->redirectToRoute('admin_user_trash');
+    }
+
+    #[Route('/admin/users/trash', name: 'admin_user_trash', priority: 255)]
+    public function trash(UserRepository $userRepository): Response
+    {
+        // Get only deleted users
+        $users = $userRepository->createQueryBuilder('u')
+            ->where('u.deletedAt IS NOT NULL')
+            ->orderBy('u.deletedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('admin/user/trash.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    #[Route('/admin/users/{id}/permanent-delete', name: 'admin_user_permanent_delete', methods: ['POST'], priority: 255, requirements: ['id' => '\d+'])]
+    public function permanentDelete(int $id, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($id);
+        if (!$user) {
+            $this->addFlash('error', 'User with ID ' . $id . ' not found.');
+            return $this->redirectToRoute('admin_user_trash');
+        }
+
+        if ($this->isCsrfTokenValid('permanent_delete_user_'.$user->getId(), $request->request->get('_token'))) {
+            // Permanent delete: actually remove from database
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'User permanently deleted.');
+        }
+
+        return $this->redirectToRoute('admin_user_trash');
     }
 }
 

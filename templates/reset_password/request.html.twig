@@ -1,22 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Mot de passe oublié - Save Gabes{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+    <!-- Conteneur plein écran avec background -->
+    <div style="
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background-image: url('{{ asset('img/pollution-gabes-plages-interdites-1-2000px.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ">
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
+        <!-- Overlay sombre -->
+        <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+    "></div>
+
+        <!-- Formulaire centré -->
+        <div style="
+        position: relative;
+        z-index: 1;
+        width: 450px;
+        max-width: 90%;
+        padding: 40px;
+        border-radius: 12px;
+        background-color: rgba(245, 245, 220, 0.6);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    ">
+            <div class="text-center mb-4">
+                <h2 style="color: #28a745;">Mot de passe oublié</h2>
+                <p style="color: #555; font-size: 0.9rem;">Entrez votre email pour recevoir un lien de réinitialisation</p>
+            </div>
+
+            {{ form_start(requestForm) }}
+                <div class="mb-3">
+                    {{ form_label(requestForm.email, null, {'label_attr': {'style': 'color: #333; font-weight: 500;'}}) }}
+                    {{ form_widget(requestForm.email, {'attr': {'style': 'border-radius: 8px; padding: 12px;'}}) }}
+                    {{ form_errors(requestForm.email) }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100" style="
+                    padding: 12px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    background: linear-gradient(135deg, #1F8B4C, #16a34a);
+                    border: none;
+                    transition: transform 0.2s ease;
+                ">
+                    Envoyer le lien de réinitialisation
+                </button>
+            {{ form_end(requestForm) }}
+
+            <div class="text-center mt-3">
+                <a href="{{ path('app_login') }}" style="color: #28a745; text-decoration: none; font-weight: 500;">
+                    <i class="fa fa-arrow-left"></i> Retour à la connexion
+                </a>
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}

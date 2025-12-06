@@ -48,6 +48,15 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTime $updatedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $deletedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $resetTokenExpiresAt = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
 
@@ -161,6 +170,23 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTime $deletedAt): static
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
+    }
+
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -194,6 +220,30 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTime
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(?\DateTime $resetTokenExpiresAt): static
+    {
+        $this->resetTokenExpiresAt = $resetTokenExpiresAt;
 
         return $this;
     }

@@ -82,6 +82,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Assets::new()->addCssFile('build/css/admin.css');
     }
-}// yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+}
+
 
 

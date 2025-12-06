@@ -40,9 +40,9 @@
         }
 
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --accent-color: #f093fb;
+            --primary-color: #1F8B4C;
+            --secondary-color: #16a34a;
+            --accent-color: #22c55e;
             --bg-color: #f5f7fa;
             --sidebar-bg: #ffffff;
             --text-primary: #2d3748;
@@ -94,7 +94,7 @@
         .sidebar-logo {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -144,17 +144,18 @@
             border-radius: 10px;
             transition: all 0.3s ease;
             position: relative;
+            background: white;
         }
 
         .menu-link:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             color: white;
             transform: translateX(5px);
             box-shadow: var(--shadow-md);
         }
 
         .menu-link.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             color: white;
             box-shadow: var(--shadow-md);
         }
@@ -216,14 +217,14 @@
         }
 
         .submenu-link:hover {
-            background: rgba(102, 126, 234, 0.1);
-            color: var(--primary-color);
+            background: rgba(31, 139, 76, 0.1);
+            color: #1F8B4C;
             transform: translateX(5px);
         }
 
         .submenu-link.active {
-            background: rgba(102, 126, 234, 0.15);
-            color: var(--primary-color);
+            background: rgba(31, 139, 76, 0.15);
+            color: #1F8B4C;
             font-weight: 500;
         }
 
@@ -398,7 +399,7 @@
         }
 
         .header-btn:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             color: white;
             transform: scale(1.1);
         }
@@ -432,7 +433,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -559,12 +560,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #1F8B4C, #16a34a);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            background: linear-gradient(135deg, #16a34a, #1F8B4C);
         }
 
         /* Responsive */
@@ -763,41 +764,17 @@
             <div class="header-right">
                 <div class="search-box">
                     <span class="search-icon material-symbols-rounded">search</span>
-                    <input type="text" class="search-input" placeholder="Rechercher...">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher...">
                 </div>
-                <div class="header-actions">
-                    <button class="header-btn" title="Settings">
-                        <span class="material-symbols-rounded">settings</span>
-                    </button>
-                    <div class="dropdown" id="notificationDropdown">
-                        <button class="header-btn" title="Notifications">
-                            <span class="material-symbols-rounded">notifications</span>
-                            <span class="notification-badge"></span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-item">
-                                <div class="dropdown-item-title">Nouvelle notification</div>
-                                <div class="dropdown-item-time">Il y a 13 minutes</div>
-                            </div>
-                            <div class="dropdown-item">
-                                <div class="dropdown-item-title">Nouveau donateur</div>
-                                <div class="dropdown-item-time">Il y a 1 heure</div>
-                            </div>
-                            <div class="dropdown-item">
-                                <div class="dropdown-item-title">Projet mis à jour</div>
-                                <div class="dropdown-item-time">Il y a 2 heures</div>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="user-profile" id="userProfile">
-                        <div class="user-avatar">A</div>
-                        <div>
-                            <div style="font-weight: 600; font-size: 0.875rem;">Admin</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">Administrateur</div>
-                        </div>
+                    <div class="user-avatar">A</div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem;">Admin</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Administrateur</div>
                     </div>
                 </div>
-                </div>
+            </div>
         </header>
 
         {# Content #}
@@ -951,5 +928,66 @@
 
 {% block javascripts %}{% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Search functionality - Filter by username only with validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const tables = document.querySelectorAll('table tbody');
+                
+                tables.forEach(table => {
+                    const rows = table.querySelectorAll('tr');
+                    let visibleCount = 0;
+                    
+                    rows.forEach(row => {
+                        // Skip "no users found" rows
+                        if (row.querySelector('td[colspan]')) {
+                            return;
+                        }
+                        
+                        // Get only the first cell (Name column)
+                        const nameCell = row.querySelector('td:first-child');
+                        
+                        if (nameCell) {
+                            const nameText = nameCell.textContent.toLowerCase();
+                            if (searchTerm === '' || nameText.includes(searchTerm)) {
+                                row.style.display = '';
+                                visibleCount++;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    });
+                    
+                    // Remove existing "no results" message
+                    const existingNoResults = table.querySelector('.no-search-results');
+                    if (existingNoResults) {
+                        existingNoResults.remove();
+                    }
+                    
+                    // Show "no results" message if search term exists but no matches
+                    if (searchTerm !== '' && visibleCount === 0) {
+                        const noResultsRow = document.createElement('tr');
+                        noResultsRow.className = 'no-search-results';
+                        noResultsRow.innerHTML = `
+                            <td colspan="8" class="text-center py-4">
+                                <div style="color: #718096;">
+                                    <i class="fa fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                    <p style="margin: 0; font-weight: 500;">Aucun utilisateur trouvé pour "${searchTerm}"</p>
+                                    <small>Essayez de rechercher par nom ou prénom</small>
+                                </div>
+                            </td>
+                        `;
+                        table.appendChild(noResultsRow);
+                    }
+                });
+            });
+        }
+    });
+</script>
 </body>
 </html>

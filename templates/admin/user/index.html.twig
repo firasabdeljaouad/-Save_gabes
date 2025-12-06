@@ -184,10 +184,16 @@
                 <h5 class="mb-0">Users List</h5>
                 <small class="text-muted">Create, update or delete any user entry.</small>
             </div>
-            <button type="button" class="btn-add-user" onclick="loadCreateForm()">
-                <i class="fa fa-plus"></i>
-                Add New User
-            </button>
+            <div class="d-flex gap-2">
+                <a href="{{ path('admin_user_trash') }}" class="btn btn-outline-danger">
+                    <i class="fa fa-trash"></i>
+                    Corbeille
+                </a>
+                <button type="button" class="btn-add-user" onclick="loadCreateForm()">
+                    <i class="fa fa-plus"></i>
+                    Add New User
+                </button>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
