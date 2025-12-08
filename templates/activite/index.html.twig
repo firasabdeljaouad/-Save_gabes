@@ -1,57 +1,53 @@
-{% extends 'dashboard.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Liste des Activités{% endblock %}
+{% block title %} Activites{% endblock %}
 
 {% block body %}
-    <h1 class="mb-4">Liste des Activités</h1>
 
-    <a href="{{ path('app_activite_new') }}" class="btn btn-primary mb-3">
-        Créer une nouvelle activité
-    </a>
-    php -S 127.0.0.1:8000 -t public
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>Lieu</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    <br>
+    <div class="popular_causes_area pt-120">
+        <h1>Our Activite</h1>
+        <div class="container">
+            <div class="row">
+                <br>
+                <form method="get" action = "{{path('app_activite_index')  }}" class="row g-3">
+                    <div class="col-md-4 mb-5">
+                        <label for="search" class="form-label">Search by title or description</label>
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Rechercher..."
+                               value="{{ currentFilters.search is defined ? currentFilters.search : '' }}">
+                    </div>
 
-        <tbody>
-        {% for activite in activites %}
-            <tr>
-                <td>{{ activite.id }}</td>
-                <td>{{ activite.titre }}</td>
-                <td>{{ activite.description }}</td>
-                <td>{{ activite.date|date('Y-m-d') }}</td>
-                <td>{{ activite.lieu }}</td>
-                <td>
-                    <a class="btn btn-sm btn-info"
-                       href="{{ path('app_activite_show', { id: activite.id }) }}">Voir</a>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fa fa-search" aria-hidden="true"></i> Filtrer
+                        </button>
+                    </div>
+                </form>
 
-                    <a class="btn btn-sm btn-warning"
-                       href="{{ path('app_activite_edit', { id: activite.id }) }}">Modifier</a>
+                {% for activite in activites %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single_cause">
+                            <div class="thumb">
+                                <img src="{{ asset('uploads/activites/' ~ activite.image) }}" alt="{{ activite.title }}"
+                                     alt="{{ activite.title }}">
+                            </div>
+                            <div class="causes_content">
 
-                    <form method="post"
-                          action="{{ path('app_activite_delete', { id: activite.id }) }}"
-                          style="display:inline-block"
-                          onsubmit="return confirm('Supprimer ?');">
-                        <input type="hidden" name="_token"
-                               value="{{ csrf_token('delete' ~ activite.id) }}">
-                        <button class="btn btn-sm btn-danger">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Aucune activité trouvée.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+                                <h4>{{ activite.title }}</h4>
+                                <p>Description: {{ activite.description }}</p>
+                                <p>Lieu: {{ activite.lieu }}</p>
+                                <a class="read_more" href="{{ path('app_benevole_list_benevole', { id: activite.id }) }}">list benevole</a>
+                                <br>
+
+                                <a role="button" class="btn btn-primary" href="{{ path('add_app_benevole', { id: activite.getId() }) }}">Join us</a> <br>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'dashboard.html.twig' %}
+{% block title %}add activite{% endblock %}
+    {% block body %}
+        <br>
+        <div class="container">
+
+            <div class="form">
+                <h2>Ajoute un Activite</h2>
+
+                {{ form_start(form,{'attr':{'novalidate': 'novalidate'}}) }}
+
+                {{ form_row(form.titre, {
+                    attr: {'class': 'form-control'}
+                }) }}
+
+                {{ form_row(form.image, {
+                    attr: {'class': 'form-control'}
+                }) }}
+
+                {{ form_row(form.description, {
+                    attr: {'class': 'form-control'}
+                }) }}
+
+                {{ form_row(form.lieu, {
+                    attr: {'class': 'form-control'}
+                }) }}
+                {{ form_row(form.benevoles, {
+                    attr: {'class': 'form-control'}
+                }) }}
+
+                {{ form_row(form.sauvegarder, {
+                    attr: {
+                        'class': 'btn btn-primary mt-3 custom-submit-btn',
+                        'style': 'margin-top:25px;'
+                    }
+                }) }}
+
+                {{ form_end(form) }}
+
+            </div>
+
+        </div>
+
+    {% endblock %}

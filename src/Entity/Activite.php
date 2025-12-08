@@ -115,5 +115,7 @@ class Activite
     {
         return $this->titre;
     }
+
+
 }
 

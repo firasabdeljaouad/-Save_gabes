@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% block title %}list de benevole{% endblock %}
+{% block body %}
+    <h2>List de benevoles</h2>
+    <br>
+    <table class ="table-borderless">
+        <tr>
+            <th> Nom </th>
+            <th> Email </th>
+            <th> Telphone </th>
+
+        </tr>
+        {% for benevole in benevoles %}
+            <tr>
+                <td>{{ benevole.nom }}</td>
+                <td>{{ benevole.email }}</td>
+                <td>{{ benevole.telephone }}</td>
+
+            </tr>
+        {% endfor %}
+
+    </table>
+{% endblock %}

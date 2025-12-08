@@ -1,60 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des bénévoles{% endblock %}
-
 {% block body %}
-    <div class="container mt-4">
+    <br>
+    <div class="container">
 
-        <h1 class="mb-4">Liste des bénévoles</h1>
+        <div class="form">
+            <h2>joun us in our activite</h2>
 
-        <a href="{{ path('app_benevoles_new') }}" class="btn btn-success mb-3">
-            + Ajouter un bénévole
-        </a>
+            {{ form_start(form,{'attr':{'novalidate': 'novalidate'}}) }}
 
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
+            {{ form_row(form.nom, {
+                attr: {'class': 'form-control'}
+            }) }}
 
-            <tbody>
-            {% for b in benevoles %}
-                <tr>
-                    <td>{{ b.id }}</td>
-                    <td>{{ b.nom }}</td>
-                    <td>{{ b.email }}</td>
-                    <td>{{ b.telephone }}</td>
+            {{ form_row(form.email, {
+                attr: {'class': 'form-control'}
+            }) }}
 
-                    <td>
-                        <a href="{{ path('app_benevoles_show', {id: b.id}) }}" class="btn btn-info btn-sm">
-                            Voir
-                        </a>
+            {{ form_row(form.telephone, {
+                attr: {'class': 'form-control'}
+            }) }}
 
-                        <a href="{{ path('app_benevoles_edit', {id: b.id}) }}" class="btn btn-warning btn-sm">
-                            Modifier
-                        </a>
+            {{ form_row(form.submit, {
+                attr: {
+                    'class': 'btn btn-primary mt-3 custom-submit-btn',
+                    'style': 'margin-top:25px;'
+                }
+            }) }}
 
-                        <form method="post" action="{{ path('app_benevoles_delete', {id: b.id}) }}"
-                              style="display:inline-block"
-                              onsubmit="return confirm('Êtes-vous sûr ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ b.id) }}">
-                            <button class="btn btn-danger btn-sm">Supprimer</button>
-                        </form>
+            {{ form_end(form) }}
 
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">Aucun bénévole trouvé.</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        </div>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Use your custom classes
+            const startDate = document.querySelector('.project_startProject');
+            const endDate = document.querySelector('.project_endProject');
+
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split('T')[0];
+
+            // Set minimum date to today for startDate (disable past dates)
+            startDate.min = today;
+
+            // Disable endDate initially (no start date selected yet)
+            endDate.disabled = true;
+
+            // Update endDate when startDate changes
+            startDate.addEventListener('change', function () {
+                if (this.value) {
+                    // Enable endDate when startDate has a value
+                    endDate.disabled = false;
+
+                    // Set minimum date for endDate to the selected startDate
+                    endDate.min = this.value;
+
+                    // Reset endDate if it's before the new startDate
+                    if (endDate.value && endDate.value < this.value) {
+                        endDate.value = '';
+                    }
+                } else {
+                    // Disable endDate if startDate is cleared
+                    endDate.disabled = true;
+                    endDate.value = '';
+                }
+            });
+        });
+    </script>
+
 {% endblock %}

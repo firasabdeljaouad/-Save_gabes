@@ -2,65 +2,61 @@
 
 namespace App\Controller;
 
-
-namespace App\Controller;
-
+use App\Entity\Activite;
 use App\Entity\Benevole;
 use App\Form\BenevoleType;
+use App\Repository\ActiviteRepository;
 use App\Repository\BenevoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/benevole')]
-class BenevoleController extends AbstractController
+final class BenevoleController extends AbstractController
 {
-    #[Route('/', name: 'app_benevoles_index', methods: ['GET'])]
-    public function index(BenevoleRepository $repo): Response
+
+    #[Route('/benevole', name: 'benevole')]
+    public function index(): Response
     {
         return $this->render('benevole/index.html.twig', [
-            'benevoles' => $repo->findAll(),
+            'controller_name' => 'BenevoleController',
         ]);
     }
 
-    #[Route('/new', name: 'app_benevoles_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
-        $benevole = new Benevole();
-        $form = $this->createForm(BenevoleType::class, $benevole);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($benevole);
-            $em->flush();
+    #[Route('/list_benevole/{id}',name: 'app_benevole_list_benevole')]
+    public function show(
+        int $id,
+        ActiviteRepository $activiteRepository,
+        BenevoleRepository $benevoleRepository,
+    ): Response {
+        $activite = $activiteRepository->find($id);
+        if(!$activite){
+            throw $this->createNotFoundException('there is no benevole');
 
-            return $this->redirectToRoute('app_benevoles_index');
         }
-
-        return $this->render('benevole/new.html.twig', [
-            'form' => $form,
+        $benevoles = $activite->getBenevoles();
+        return $this->render('benevole/benevole_list.html.twig', [
+            'benevoles' => $benevoles,
+            'activite' => $activite,
         ]);
     }
-
-    #[Route('/{id}', name: 'app_benevoles_show', methods: ['GET'])]
-    public function show(Benevole $benevole): Response
-    {
-        return $this->render('benevole/show.html.twig', [
-            'benevole' => $benevole,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_benevoles_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Benevole $benevole, EntityManagerInterface $em): Response
-    {
+    #[Route('/benevole/{id}/edit', name: 'app_benevole_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request,
+        Benevole $benevole,
+        EntityManagerInterface $em
+    ): Response {
         $form = $this->createForm(BenevoleType::class, $benevole);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            return $this->redirectToRoute('app_benevoles_index');
+
+            $this->addFlash('success', 'Le bénévole a été modifié avec succès.');
+
+            return $this->redirectToRoute('app_benevole_show', ['id' => $benevole->getId()]);
         }
 
         return $this->render('benevole/edit.html.twig', [
@@ -69,15 +65,19 @@ class BenevoleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_benevoles_delete', methods: ['POST'])]
-    public function delete(Request $request, Benevole $benevole, EntityManagerInterface $em): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $benevole->getId(), $request->get('_token'))) {
+    #[Route('/benevole/{id}/delete', name: 'app_benevole_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Benevole $benevole,
+        EntityManagerInterface $em
+    ): Response {
+        if ($this->isCsrfTokenValid('delete'.$benevole->getId(), $request->request->get('_token'))) {
             $em->remove($benevole);
             $em->flush();
+
+            $this->addFlash('success', 'Le bénévole a été supprimé avec succès.');
         }
 
-        return $this->redirectToRoute('app_benevoles_index');
+        return $this->redirectToRoute('app_benevole');
     }
 }
-
