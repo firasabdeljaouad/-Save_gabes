@@ -20,10 +20,10 @@ class ActiviteRepository extends ServiceEntityRepository
     public function findactiviteByCriteriaQuery(array $criteria): Query
     {
         $A = $this->createQueryBuilder('a')
-            ->orderBy('a.startDate', 'ASC');
+            ->orderBy('a.date', 'ASC');
 
         if (isset($criteria['search']) && $criteria['search']) {
-            $A->andWhere('a.name LIKE :search OR a.description  LIKE :search OR a.lieu  LIKE :search ')
+            $A->andWhere('a.title LIKE :search OR a.description  LIKE :search OR a.lieu  LIKE :search ')
                 ->setParameter('search', '%' . $criteria['search'] . '%');
         }
 

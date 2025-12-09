@@ -1,0 +1,33 @@
+{% extends "dashboard.html.twig" %}
+{% block title %}list de activite{% endblock %}
+{% block body %}
+    <br>
+    <h1>Liste des Activités</h1>
+    <a href="{{ path('app_activite_new') }}" class="btn btn-primary mb-3">Nouvelle Activité</a>
+    <table class ="table-borderless">
+        <tr>
+            <th>title</th>
+            <th>description</th>
+            <th>image</th>
+            <th> date </th>
+            <th> lieu </th>
+        </tr>
+        {% for activite in activites_list %}
+            <tr>
+                <td>{{ activite.title }}</td>
+                <td>
+                    <img src="{{ asset('uploads/activites/' ~ activite.image) }}"
+                         alt="{{ activite.title }}"
+                         width="100">
+                </td>
+                <td>{{ activite.date|date('Y-m-d') }}</td>
+                <td>{{ activite.description }}</td>
+                <td>{{ activite.lieu }}</td>
+                <td>
+                    <a role="button"  href="{{ path('app_activite_edit',{id:activite.id}) }}">Update</a>|
+                    <a role="button" class="danger"  href ="{{ path('app_activite_delete', {id: activite.id}) }}">Delete</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -31,6 +31,14 @@ final class ActiviteController extends AbstractController
             ]);
         }
             */
+
+    #[Route('/list_activite', name:'app_list_Activite')]
+    public function list(ActiviteRepository $activiteRepository){
+        $Activite = $activiteRepository->findAll();
+        return $this->render('activite/list_activite.html.twig', [
+            'activites_list' => $Activite,
+        ]);
+    }
     #[Route('/Details/{id}', name: 'app_activite_details')]
     public function show(
         ActiviteRepository $activiteRepository,
@@ -57,6 +65,11 @@ final class ActiviteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Ensure date is set (safety check)
+            if (!$activites->getDate()) {
+                $activites->setDate(new \DateTimeImmutable());
+            }
+
             // Handle image upload before persisting
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
@@ -137,6 +150,11 @@ final class ActiviteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Ensure date is set (safety check)
+            if (!$activite->getDate()) {
+                $activite->setDate(new \DateTimeImmutable());
+            }
+
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile) {
@@ -171,7 +189,7 @@ final class ActiviteController extends AbstractController
             return $this->redirectToRoute('app_activite_index');
         }
 
-        return $this->render('activite/add_Activite.html.twig', [
+        return $this->render('activite/update_activite.html.twig', [
             'form' => $form,
             'activite' => $activite,
         ]);
@@ -216,15 +234,8 @@ final class ActiviteController extends AbstractController
     ): Response
     {
         $search = $request->query->get('search');
-        $status = $request->query->get('status');
-        $dateFrom = $request->query->get('date_from');
-        $dateTo = $request->query->get('date_to');
-
         $criteria = array_filter([
             'search' => $search,
-            'status' => $status,
-            'date_from' => $dateFrom,
-            'date_to' => $dateTo,
         ], function ($value) {
             return $value !== null && $value !== '';
         });

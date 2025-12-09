@@ -16,11 +16,41 @@ class Benevole
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.'
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-ZÀ-ÿ\s\-]+$/u',
+        message: 'Le nom ne peut contenir que des lettres, espaces et tirets.'
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'email est obligatoire.')]
+    #[Assert\Email(
+        message: 'L\'email {{ value }} n\'est pas valide.'
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'L\'email ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $email = null;
 
+    #[Assert\NotBlank(message: 'Le téléphone est obligatoire.')]
+    #[Assert\Regex(
+        pattern: '/^(\+216)?[2459]\d{7}$/',
+        message: 'Le numéro de téléphone n\'est pas valide. Format attendu: +216XXXXXXXX ou XXXXXXXX'
+    )]
+    #[Assert\Length(
+        min: 8,
+        max: 20,
+        minMessage: 'Le téléphone doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le téléphone ne peut pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
 

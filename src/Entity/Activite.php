@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ActiviteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActiviteRepository::class)]
@@ -14,21 +15,52 @@ class Activite
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    #[Assert\NotBlank(message: 'Le titre est obligatoire.')]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: 'Le titre doit contenir au moins 3 caractères.',
+        maxMessage: 'Le titre ne peut pas dépasser 100 caractères.'
+    )]
     #[ORM\Column(length: 255)]
-    private ?string $titre = null;
+    private ?string $title = null;
+    #[Assert\NotBlank(message: 'La description est obligatoire.')]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'La description doit contenir au moins 10 caractères.'
+    )]
+    #[ORM\Column(type: Types::TEXT)]
 
-    #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Assert\NotNull(message: 'La date est obligatoire.')]
+    #[Assert\Type(\DateTimeImmutable::class)]
+    #[Assert\GreaterThanOrEqual(
+        'today',
+        message: 'La date doit être aujourd\'hui ou dans le futur.'
+    )]
+
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le lieu est obligatoire.')]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: 'Le lieu doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le lieu ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $lieu = null;
 
     #[ORM\ManyToMany(targetEntity: Benevole::class, mappedBy: 'activites')]
     private Collection $benevoles;
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le nom de l\'image ne peut pas dépasser {{ limit }} caractères.'
+    )]
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -40,14 +72,14 @@ class Activite
         return $this->id;
     }
 
-    public function getTitre(): ?string
+    public function getTitle(): ?string
     {
-        return $this->titre;
+        return $this->title;
     }
 
-    public function setTitre(string $titre): static
+    public function setTitle(string $title): static
     {
-        $this->titre = $titre;
+        $this->title = $title;
         return $this;
     }
 
@@ -113,7 +145,19 @@ class Activite
 
     public function __toString(): string
     {
-        return $this->titre;
+        return $this->title;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
     }
 
 
