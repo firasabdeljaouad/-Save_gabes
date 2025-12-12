@@ -1,0 +1,65 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Liste des Types d'Événements{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Liste des Types d'Événements</h1>
+
+        <a href="{{ path('app_typeevenement_add') }}" class="btn btn-primary mb-3">Ajouter un type d'événement</a>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% if typeEvenements is empty %}
+            <div class="alert alert-info">
+                Aucun type d'événement trouvé.
+            </div>
+        {% else %}
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Organisateur</th>
+                    <th>Description</th>
+                    <th>Partenaires</th>
+                    <th>Matériel Nécessaire</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for typeEvt in typeEvenements %}
+                    <tr>
+                        <td>{{ typeEvt.id }}</td>
+                        <td>{{ typeEvt.nom }}</td>
+                        <td>{{ typeEvt.organisateur }}</td>
+                        <td>{{ typeEvt.description }}</td>
+                        <td>{{ typeEvt.partenaires }}</td>
+                        <td>{{ typeEvt.materielNecessaire }}</td>
+                        <td>
+                            <a href="{{ path('update_typeevenement', {'id': typeEvt.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                            <a href="{{ path('delete_typeevenement', {'id': typeEvt.id}) }}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce type d\'événement ?')">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
