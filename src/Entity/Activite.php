@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: ActiviteRepository::class)]
+#[OA\Schema(schema: "Activite")]
 class Activite
 {
     #[ORM\Id]
@@ -141,6 +143,16 @@ class Activite
         }
 
         return $this;
+    }
+
+    /**
+     * Business function to determine if the activity is in the past.
+     *
+     * @return bool True if the activity date is before the current time.
+     */
+    public function isPast(): bool
+    {
+        return $this->date < new \DateTimeImmutable();
     }
 
     public function __toString(): string
