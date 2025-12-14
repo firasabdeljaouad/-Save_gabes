@@ -30,6 +30,22 @@ class EvenementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+
+    public function findEventsBetweenDates(\DateTimeInterface $start, \DateTimeInterface $end): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.dateDebut BETWEEN :start AND :end')
+            ->orWhere('e.dateFin BETWEEN :start AND :end')
+            ->orWhere(':start BETWEEN e.dateDebut AND e.dateFin')
+            ->orWhere(':end BETWEEN e.dateDebut AND e.dateFin')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('e.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * Find all events (returns Query for pagination)
      */

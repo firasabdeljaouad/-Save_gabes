@@ -1,0 +1,76 @@
+{# templates/calendar/debug.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Debug Calendar{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Calendar Debug Information</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Database Events ({{ events_count }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if events|length > 0 %}
+                        <ul class="list-group">
+                            {% for event in events %}
+                                <li class="list-group-item">
+                                    <strong>{{ event.titre }}</strong><br>
+                                    <small>
+                                        {{ event.dateDebut|date('Y-m-d H:i') }} to {{ event.dateFin|date('Y-m-d H:i') }}<br>
+                                        Status: {{ event.status }} | Type: {{ event.typeEvenement.nom }}
+                                    </small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            No events found in database.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5>Tunisian Holidays ({{ holidays_count }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if holidays|length > 0 %}
+                        <ul class="list-group">
+                            {% for holiday in holidays %}
+                                <li class="list-group-item">
+                                    <strong>{{ holiday.localName }}</strong><br>
+                                    <small>
+                                        Date: {{ holiday.date }}<br>
+                                        Type: {{ holiday.types|join(', ') }}
+                                    </small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            No holidays loaded from API.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+            <h5>JSON Endpoint Test</h5>
+        </div>
+        <div class="card-body">
+            <p>Test the JSON endpoint directly:</p>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

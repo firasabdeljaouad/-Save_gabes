@@ -1,0 +1,118 @@
+{# templates/calendar/upcoming.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Événements à Venir{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            <i class="bi bi-clock"></i>
+            Événements à Venir (30 prochains jours)
+        </h1>
+        <a href="{{ path('calendar_view') }}" class="btn btn-primary">
+            <i class="bi bi-calendar"></i> Vue Calendrier
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-calendar-event"></i> Événements
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if events|length > 0 %}
+                        <div class="list-group">
+                            {% for event in events %}
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ event.titre }}</h5>
+                                        <small class="text-muted">
+                                            {{ event.dateDebut|date('d/m/Y H:i') }}
+                                        </small>
+                                    </div>
+                                    <p class="mb-1">{{ event.description|slice(0, 100) }}...</p>
+                                    <small class="text-muted">
+                                        <i class="bi bi-geo-alt"></i> {{ event.lieu }}
+                                        <span class="badge bg-{{ event.status == 'confirmed' ? 'success' : 'warning' }} ms-2">
+                                            {{ event.status|trans }}
+                                        </span>
+                                    </small>
+                                    <a href="{{ path('lists_evenement_front') }}#event-{{ event.id }}"
+                                       class="btn btn-sm btn-outline-primary mt-2">
+                                        Voir détails
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            Aucun événement prévu dans les 30 prochains jours.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-calendar-x"></i> Jours Fériés à Venir
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if holidays|length > 0 %}
+                        <div class="list-group">
+                            {% for holiday in holidays %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ holiday.name }}</strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ holiday.date|date('d/m/Y') }}
+                                                ({{ holiday.date|date('l')|trans }})
+                                            </small>
+                                        </div>
+                                        {% if holiday.isWeekend %}
+                                            <span class="badge bg-warning">Weekend</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            Aucun jour férié dans les 30 prochains jours.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-calendar-range"></i> Période
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <i class="bi bi-calendar"></i>
+                        <strong>Du:</strong> {{ now|date('d/m/Y') }}
+                    </p>
+                    <p>
+                        <i class="bi bi-calendar"></i>
+                        <strong>Au:</strong> {{ nextMonth|date('d/m/Y') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

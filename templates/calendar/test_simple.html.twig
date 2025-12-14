@@ -1,0 +1,50 @@
+{# templates/calendar/test_simple.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+</head>
+<body>
+    <h1>Simple Calendar Test</h1>
+    <div id="calendar" style="width: 800px; height: 600px;"></div>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test: DOM loaded');
+
+            const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+                initialDate: '2025-12-01',
+                initialView: 'dayGridMonth',
+
+                // Test with hardcoded events
+                events: [
+                    {
+                        title: 'Camping Test',
+                        start: '2025-12-14',
+                        end: '2025-12-17',
+                        color: 'blue'
+                    },
+                    {
+                        title: '🎉 Holiday Test',
+                        start: '2025-12-17',
+                        color: 'red'
+                    },
+                    {
+                        title: 'Test Event 2',
+                        start: '2025-12-20T10:00:00',
+                        end: '2025-12-20T12:00:00',
+                        color: 'green'
+                    }
+                ]
+            });
+
+            console.log('Test: Calendar created');
+            calendar.render();
+            console.log('Test: Calendar rendered');
+        });
+    </script>
+</body>
+</html>

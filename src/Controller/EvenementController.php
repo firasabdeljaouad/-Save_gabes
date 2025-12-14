@@ -20,6 +20,7 @@ class EvenementController extends AbstractController
     #[Route('/list', name: 'lists_evenement')]
     public function list(EvenementRepository $repository): Response
     {
+
         $evenements = $repository->findAll();
         return $this->render("evenement/listEvenements.html.twig",
             ["tabEvenements" => $evenements]);

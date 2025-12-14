@@ -1,0 +1,361 @@
+{# templates/calendar/index.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendrier Save Gabes</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            color: #3498db;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .calendar-header p {
+            color: #7f8c8d;
+        }
+
+        #calendar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            height: 750px;
+        }
+
+        .fc-holiday-event {
+            background-color: #FF6B6B !important;
+            border-color: #FF6B6B !important;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+            margin-top: 50px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-alert {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <a href="{{ path('lists_evenement_front') }}" class="logo">
+            <span style="color: #3498db;">📅</span> Calendrier Save Gabes
+        </a>
+        <div>
+            <a href="{{ path('lists_evenement_front') }}" class="btn">Liste des Événements</a>
+            <a href="{{ path('app_home') }}" class="btn btn-success">Page d'Accueil</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="calendar-header">
+            <h1>Calendrier des Événements</h1>
+            <p>Visualisez tous vos événements et jours fériés tunisiens</p>
+        </div>
+
+        <div class="info-alert">
+            <strong>ℹ️ Info:</strong> Vos événements sont en 2025. Utilisez les boutons ci-dessous pour naviguer vers Décembre 2025 où se trouve votre événement "camping".
+        </div>
+
+        <div class="controls">
+            <button onclick="gotoDecember2025()" class="btn">Décembre 2025</button>
+            <button onclick="gotoCurrentMonth()" class="btn">Mois Actuel</button>
+            <button onclick="showAllEvents()" class="btn btn-success">Afficher Tous les Événements</button>
+        </div>
+
+        <div id="calendar"></div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="color-dot" style="background: #4CAF50;"></div>
+                <span>Événements</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-dot" style="background: #FF6B6B;"></div>
+                <span>Jours Fériés (Tunisie)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© {{ "now"|date("Y") }} Save Gabes. Tous droits réservés.</p>
+        <p><small>Les jours fériés sont fournis par l'API publique tunisienne.</small></p>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/fr.min.js'></script>
+
+    <script>
+        let calendar;
+
+        // Initialize calendar when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing calendar...');
+
+            const calendarEl = document.getElementById('calendar');
+
+            // Create calendar instance
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                // START IN DECEMBER 2025 where your events are
+                initialDate: '2025-12-01',
+                initialView: 'dayGridMonth',
+
+                // Toolbar configuration
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+
+                // French locale
+                locale: 'fr',
+
+                // First day: Monday
+                firstDay: 1,
+
+                // Show weekends
+                weekends: true,
+
+                // Events from JSON endpoint
+                events: '{{ path("calendar_events_json") }}',
+
+                // Event styling
+                eventDidMount: function(info) {
+                    console.log('Event mounted:', info.event.title);
+
+                    // Add holiday class for holidays
+                    if (info.event.extendedProps && info.event.extendedProps.isHoliday) {
+                        info.el.classList.add('fc-holiday-event');
+                    }
+
+                    // Add tooltip with event details
+                    let tooltipContent = info.event.title;
+
+                    if (info.event.extendedProps && info.event.extendedProps.description) {
+                        tooltipContent += '\n' + info.event.extendedProps.description;
+                    }
+
+                    if (info.event.extendedProps && info.event.extendedProps.location) {
+                        tooltipContent += '\n📍 ' + info.event.extendedProps.location;
+                    }
+
+                    info.el.title = tooltipContent;
+                },
+
+                // Event click handler
+                eventClick: function(info) {
+                    console.log('Event clicked:', info.event.title);
+
+                    let message = '📅 ' + info.event.title + '\n\n';
+
+                    if (info.event.start) {
+                        message += '📅 Date: ' + info.event.start.toLocaleDateString('fr-FR') + '\n';
+                    }
+
+                    if (info.event.extendedProps) {
+                        if (info.event.extendedProps.description) {
+                            message += '📝 ' + info.event.extendedProps.description + '\n';
+                        }
+                        if (info.event.extendedProps.location) {
+                            message += '📍 ' + info.event.extendedProps.location + '\n';
+                        }
+                        if (info.event.extendedProps.organizer) {
+                            message += '👤 Organisateur: ' + info.event.extendedProps.organizer + '\n';
+                        }
+                        if (info.event.extendedProps.participants) {
+                            message += '👥 Participants: ' + info.event.extendedProps.participants + '\n';
+                        }
+                        if (info.event.extendedProps.isHoliday) {
+                            message += '🎉 Jour férié tunisien\n';
+                        }
+                    }
+
+                    if (info.event.url && !info.event.extendedProps?.isHoliday) {
+                        if (confirm(message + '\n\nVoulez-vous voir plus de détails?')) {
+                            window.open(info.event.url, '_blank');
+                        }
+                    } else {
+                        alert(message);
+                    }
+
+                    info.jsEvent.preventDefault();
+                },
+
+                // Loading indicator
+                loading: function(isLoading) {
+                    if (isLoading) {
+                        console.log('Loading events...');
+                    } else {
+                        console.log('Events loaded successfully');
+                    }
+                }
+            });
+
+            console.log('Calendar created, rendering...');
+            calendar.render();
+            console.log('Calendar rendered!');
+
+            // Check what events were loaded
+            setTimeout(function() {
+                const events = calendar.getEvents();
+                console.log('Calendar has', events.length, 'events loaded');
+
+                if (events.length > 0) {
+                    events.forEach(function(event, index) {
+                        console.log('Event', index + 1, ':', event.title, 'at', event.start);
+                    });
+                } else {
+                    console.warn('No events found in calendar!');
+                }
+            }, 1000);
+        });
+
+        // Navigation functions
+        function gotoDecember2025() {
+            if (calendar) {
+                calendar.gotoDate('2025-12-01');
+                console.log('Navigated to December 2025');
+                alert('Navigation vers Décembre 2025 où se trouve votre événement "camping".');
+            }
+        }
+
+        function gotoCurrentMonth() {
+            if (calendar) {
+                calendar.today();
+                console.log('Navigated to current month');
+            }
+        }
+
+        function showAllEvents() {
+            if (calendar) {
+                const events = calendar.getEvents();
+                let message = 'Événements dans le calendrier:\n\n';
+
+                if (events.length === 0) {
+                    message += 'Aucun événement trouvé.';
+                } else {
+                    events.forEach(function(event, index) {
+                        const date = event.start ? event.start.toLocaleDateString('fr-FR') : 'Date inconnue';
+                        message += `${index + 1}. ${event.title} (${date})\n`;
+                    });
+                }
+
+                alert(message);
+            }
+        }
+
+        // Add some helpful console messages
+        console.log('=== CALENDAR INFO ===');
+        console.log('JSON endpoint:', '{{ path("calendar_events_json") }}');
+        console.log('Your events are in 2025');
+        console.log('Use gotoDecember2025() to see them');
+        console.log('===================');
+    </script>
+</body>
+</html>

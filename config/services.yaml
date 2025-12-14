@@ -21,5 +21,15 @@ services:
             - '../src/Entity/'
             - '../src/DataFixtures/'
 
+    App\Service\FullCalendarService:
+        arguments:
+            $evenementRepository: '@App\Repository\EvenementRepository'
+            $router: '@router'
+            $holidayService: '@App\Service\HolidayApiService'
+
+    App\Service\HolidayApiService:
+        arguments:
+            $client: '@http_client'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
