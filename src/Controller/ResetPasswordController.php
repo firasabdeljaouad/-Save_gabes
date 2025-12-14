@@ -12,11 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class ResetPasswordController extends AbstractController
 {
     #[Route('/reset-password/request', name: 'app_forgot_password_request')]
-    public function request(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function request(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $form = $this->createForm(ForgotPasswordRequestFormType::class);
         $form->handleRequest($request);
@@ -38,9 +41,22 @@ class ResetPasswordController extends AbstractController
                 
                 $entityManager->flush();
 
-                // Store token in session to display the link
+                // Send the password reset email
+                $email = (new TemplatedEmail())
+                    ->from(new Address('tesnim.bouzekri@gmail.com', 'Save Gabes Bot')) // Replace with your email
+                    ->to('tesnim.bouzekri@gmail.com') // Testing: Send all emails to me
+                    // ->to($user->getEmail()) // TODO: Uncomment for production
+                    ->subject('Your password reset request')
+                    ->htmlTemplate('reset_password/email.html.twig')
+                    ->context([
+                        'resetToken' => $resetToken,
+                    ]);
+
+                $mailer->send($email);
+
+                // Store token in session to display the link (optional, for dev/testing)
                 $request->getSession()->set('reset_token', $resetToken);
-                $request->getSession()->set('reset_email', $email);
+                $request->getSession()->set('reset_email', $email->getTo()[0]->getAddress());
             }
 
             return $this->redirectToRoute('app_forgot_password_check_email');
@@ -107,7 +123,16 @@ class ResetPasswordController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.');
+            // DEBUG: Verify password immediately
+            $plainPassword = $form->get('plainPassword')->getData();
+            $isValid = $passwordHasher->isPasswordValid($user, $plainPassword);
+            
+            if ($isValid) {
+                $this->addFlash('success', 'SUCCESS: Password updated and VERIFIED valid for ' . $user->getEmail() . '. Please login.');
+            } else {
+                $this->addFlash('error', 'CRITICAL ERROR: Password update failed verification immediately. System configuration issue.');
+            }
+
             return $this->redirectToRoute('app_login');
         }
 
