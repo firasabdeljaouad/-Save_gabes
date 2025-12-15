@@ -480,6 +480,9 @@
                                             <li><a href="#">Single Blog</a></li>
                                         </ul>
                                     </li>
+                                    {% if app.user %}
+                                        <li><a href="{{ path('app_profile') }}">Profile</a></li>
+                                    {% endif %}
                                     {#  <li><a href="#">Pages <i class="ti-angle-down"></i></a>
                                         <ul class="submenu">
                                             <li><a href="#">Elements</a></li>
@@ -495,7 +498,11 @@
 
                             <div class="Appointment">
                                 <div class="book_btn">
-                                    <a href="{{ path('app_login') }}">Login</a>
+                                    {% if app.user %}
+                                        <a href="{{ path('app_logout') }}">Logout</a>
+                                    {% else %}
+                                        <a href="{{ path('app_login') }}">Login</a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <button class="mobile-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
