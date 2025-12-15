@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Form\DonationFormType;
 use App\Repository\DonationRepository;
 use App\Repository\ProjectRepository;
+use App\Service\StripePyment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,26 +23,109 @@ class DonationController extends AbstractController
     }
 
     #[Route('/project/{id}/donate', name: 'app_project_donate')]
-    public function donate(Project $project, Request $request, EntityManagerInterface $em): Response
+    public function donate(
+        Project $project, 
+        Request $request, 
+        EntityManagerInterface $em,
+        \App\Service\StripePaymentService $stripePaymentService
+    ): Response
     {
         $donation = new Donation();
         $donation->setProject($project);
+        // Default status for new donation
+        $donation->setStatus('pending');
+        $donation->setPaymentMethod('Stripe'); 
 
         $form = $this->createForm(DonationFormType::class, $donation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($donation);
-            $em->flush();
+            // Store donation data in session instead of persisting immediately
+            $donationData = [
+                'amount' => $donation->getAmount(),
+                'paymentMethod' => $donation->getPaymentMethod(),
+                'isAnonymous' => $donation->isAnonymous(),
+                'projectId' => $project->getId(),
+                'name' => $donation->getName(), // Assuming getName exists on Donation
+                // Add other necessary fields here
+            ];
+            
+            $request->getSession()->set('pending_donation', $donationData);
 
-            $this->addFlash('success', 'Donation successfully added!');
-            return $this->redirectToRoute('app_project_donate', ['id' => $project->getId()]);
+            $checkoutUrl = $stripePaymentService->createCheckoutSession($donation);
+
+            if ($checkoutUrl) {
+                return $this->redirect($checkoutUrl);
+            }
+            
+            $this->addFlash('error', 'Could not create payment session.');
         }
 
         return $this->render('donation/index.html.twig', [
             'form' => $form->createView(),
             'project' => $project,
         ]);
+    }
+
+    #[Route('/payment/success', name: 'app_payment_success')]
+    public function stripeSuccess(
+        Request $request, 
+        EntityManagerInterface $em, 
+        ProjectRepository $projectRepository
+    ): Response
+    {
+        $session = $request->getSession();
+        $donationData = $session->get('pending_donation');
+
+        if (!$donationData) {
+            $this->addFlash('error', 'No pending donation found.');
+            return $this->redirectToRoute('app_donation'); // Or wherever appropriate
+        }
+
+        $project = $projectRepository->find($donationData['projectId']);
+
+        if (!$project) {
+             $this->addFlash('error', 'Project not found.');
+             return $this->redirectToRoute('app_donation');
+        }
+
+        $donation = new Donation();
+        $donation->setAmount($donationData['amount']);
+        $donation->setPaymentMethod($donationData['paymentMethod']);
+        $donation->setIsAnonymous($donationData['isAnonymous']);
+        $donation->setProject($project);
+        $donation->setName($donationData['name']);
+        
+        $donation->setStatus('completed');
+        $donation->setTransactionId($request->query->get('session_id'));
+        
+        $em->persist($donation);
+        $em->flush();
+        
+        // Clear session
+        $session->remove('pending_donation');
+
+        $this->addFlash('success', 'Thank you for your donation!');
+        return $this->redirectToRoute('app_project_donate', ['id' => $project->getId()]);
+    }
+
+    #[Route('/payment/cancel', name: 'app_payment_cancel')]
+    public function stripeCancel(Request $request): Response
+    {
+        $session = $request->getSession();
+        $donationData = $session->get('pending_donation');
+        
+        $projectId = $donationData['projectId'] ?? null;
+        
+        $session->remove('pending_donation');
+
+        $this->addFlash('warning', 'Payment cancelled.');
+        
+        if ($projectId) {
+            return $this->redirectToRoute('app_project_donate', ['id' => $projectId]);
+        }
+        
+        return $this->redirectToRoute('app_donation');
     }
 
     #[Route('/list_donations/{id}', name: 'app_donations_details')]
