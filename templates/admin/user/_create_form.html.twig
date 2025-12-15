@@ -1,0 +1,35 @@
+{% if form %}
+    <div class="row g-3">
+        <div class="col-md-6">
+            {{ form_row(form.firstName, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.lastName, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.sexe, {'attr': {'class': 'form-select'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.status, {'attr': {'class': 'form-select'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.role, {'attr': {'class': 'form-select'}}) }}
+        </div>
+        <div class="col-md-12">
+            {{ form_row(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {{ form_rest(form) }}
+    </div>
+{% else %}
+    <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,136 @@
+/* slick-nav */
+.mobile_menu {
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .mobile_menu {
+        position: absolute;
+        right: 0;
+        width: 100%;
+        z-index: 9;
+    }
+}
+
+.slicknav_menu .slicknav_nav {
+    background: #fff;
+    float: right;
+    margin-top: 0;
+    padding: 0;
+    width: 95%;
+    border-radius: 0;
+    margin-top: 5px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 11px;
+}
+
+.slicknav_menu .slicknav_nav a:hover {
+    background: transparent;
+    color: #009DFF;
+}
+
+.slicknav_menu .slicknav_nav a.active {
+    color: #009DFF;
+}
+
+.slicknav_menu .slicknav_nav a i {
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .slicknav_menu .slicknav_nav a i {
+        display: none;
+    }
+}
+
+/* @media #{$tablet_device} */
+@media (max-width: 768px) {
+    .slicknav_menu .slicknav_nav a i {
+        display: none;
+    }
+}
+
+.slicknav_menu .slicknav_nav .slicknav_btn {
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: -40px;
+    position: relative;
+    z-index: 99;
+    border: 1px solid #ddd;
+    top: -36px;
+    right: 5px;
+}
+
+.slicknav_menu .slicknav_nav .slicknav_btn .slicknav_icon {
+    margin-right: 6px;
+    margin-top: 3px;
+    position: relative;
+    padding-bottom: 3px;
+    top: -11px;
+    right: -5px;
+}
+
+/* @media #{$mobile_device} */
+@media (max-width: 576px) {
+    .slicknav_menu {
+        margin-right: 0;
+    }
+}
+
+/* slick-nav */
+.slicknav_nav .slicknav_arrow {
+    float: right;
+    font-size: 22px;
+    position: relative;
+    top: -9px;
+}
+
+.slicknav_btn {
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 99;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    right: 5px;
+    margin-top: -5px;
+    top: -31px;
+}
+
+.slicknav_btn {
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 99;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    right: 0;
+    margin-top: -5px;
+    top: -24px;
+}
+
+.slicknav_icon-bar {
+    background: #fff !important;
+}
+
+.slicknav_btn {
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 99;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    right: 7px;
+    margin-top: -5px;
+    top: -29px;
+}

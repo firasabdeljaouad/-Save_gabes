@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Activités{% endblock %}
+
+{% block body %}
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Nos Activités</h3>
+                        <p class="text-white mt-2">Découvrez et participez à nos événements</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bradcam_area_end -->
+
+    <div class="popular_causes_area pt-120 pb-120">
+        <div class="container">
+            <!-- Search Section -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8">
+                    <form method="get" action="{{ path('app_activite_index') }}" class="d-flex shadow-sm rounded-pill bg-white p-1">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0 ps-3">
+                                <i class="fa fa-search text-muted"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control border-0 shadow-none" 
+                                   placeholder="Rechercher une activité (titre, lieu...)" 
+                                   value="{{ currentFilters.search|default('') }}">
+                            <button type="submit" class="btn text-white rounded-pill px-4" style="background-color: #3CC78F;">
+                                Rechercher
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for activite in activites %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="single_cause shadow-sm rounded-3 overflow-hidden h-100 d-flex flex-column bg-white transition-hover">
+                            <div class="thumb position-relative" style="height: 220px; overflow: hidden;">
+                                {% if activite.image %}
+                                    <img src="{{ asset('uploads/activites/' ~ activite.image) }}" alt="{{ activite.title }}" class="w-100 h-100 object-fit-cover" style="object-fit: cover;">
+                                {% else %}
+                                    <img src="{{ asset('img/causes/1.png') }}" alt="{{ activite.title }}" class="w-100 h-100 object-fit-cover" style="object-fit: cover;">
+                                {% endif %}
+                                <span class="badge position-absolute top-0 start-0 m-3 text-white px-3 py-2 shadow-sm" style="background-color: #3CC78F; border-radius: 20px; font-size: 0.85rem;">
+                                    <i class="fa fa-calendar me-1"></i> {{ activite.date ? activite.date|date('d M Y') : 'Date à venir' }}
+                                </span>
+                            </div>
+                            <div class="causes_content p-4 flex-grow-1 d-flex flex-column">
+                                <h4 class="mb-3" style="font-family: 'Yeseva One', cursive;">
+                                    <a href="{{ path('app_activite_details', {'id': activite.id}) }}" class="text-dark text-decoration-none">
+                                        {{ activite.title }}
+                                    </a>
+                                </h4>
+                                <p class="text-muted flex-grow-1" style="font-size: 0.95rem; line-height: 1.6;">
+                                    {{ activite.description|length > 100 ? activite.description|slice(0, 100) ~ '...' : activite.description }}
+                                </p>
+                                <div class="d-flex align-items-center text-secondary mb-4 mt-2">
+                                    <i class="fa fa-map-marker me-2" style="color: #3CC78F;"></i>
+                                    <small class="fw-bold">{{ activite.lieu }}</small>
+                                </div>
+                                <div class="d-flex justify-content-between mt-auto pt-3 border-top">
+                                    <a href="{{ path('add_app_benevole', { id: activite.getId() }) }}" class="btn text-white btn-sm px-4 rounded-pill fw-bold" style="background-color: #3CC78F; transition: all 0.3s;">
+                                        Rejoindre
+                                    </a>
+                                    <a href="{{ path('app_benevole_list_benevole', { id: activite.id }) }}" class="btn btn-outline-secondary btn-sm px-3 rounded-pill fw-bold" style="border-color: #e8e8e8; color: #666;">
+                                        <i class="fa fa-users me-1"></i> Liste
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 text-center py-5">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fa fa-folder-open-o fa-4x text-muted mb-3 opacity-50"></i>
+                            <h3 class="text-muted">Aucune activité trouvée</h3>
+                            <p class="text-muted">Essayez de modifier vos critères de recherche.</p>
+                            <a href="{{ path('app_activite_index') }}" class="btn btn-outline-success mt-3 rounded-pill">Voir toutes les activités</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-5">
+                {{ knp_pagination_render(activites) }}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .single_cause {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .single_cause:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: white !important;
+            border-color: #6c757d !important;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Edit User - Admin{% endblock %}
+
+{% block breadcrumb %}Edit User{% endblock %}
+
+{% block page_title %}Edit User{% endblock %}
+
+{% block page_subtitle %}Update user information and permissions{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .edit-form-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+        }
+
+        .edit-form-card .card-header {
+            background: linear-gradient(135deg, #fbcfe8, #e0f2fe);
+            border-radius: 18px 18px 0 0;
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .edit-form-card .btn-primary {
+            background: linear-gradient(135deg, #a5b4fc, #c084fc);
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            padding: 0.625rem 1.5rem;
+        }
+
+        .edit-form-card .btn-primary:hover {
+            background: linear-gradient(135deg, #c084fc, #a5b4fc);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(165, 180, 252, 0.4);
+        }
+
+        .edit-form-card .btn-outline-secondary {
+            border-color: rgba(148, 163, 184, 0.4);
+            color: #475569;
+        }
+
+        .edit-form-card .btn-outline-secondary:hover {
+            background: rgba(148, 163, 184, 0.1);
+            border-color: rgba(148, 163, 184, 0.6);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    <div class="edit-form-card card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fa fa-edit text-primary"></i> Edit {{ userEntity.firstName }} {{ userEntity.lastName }}</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(userForm, {'attr': {'class': 'row g-3'}}) }}
+                <div class="col-md-6">
+                    {{ form_row(userForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.sexe, {'attr': {'class': 'form-select'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.status, {'attr': {'class': 'form-select'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.role, {'attr': {'class': 'form-select'}}) }}
+                </div>
+                <div class="col-md-12">
+                    {{ form_row(userForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                    <small class="form-text text-muted">Leave blank to keep the current password</small>
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                    <a href="{{ path('admin_user_index') }}" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-left me-2"></i>Back
+                    </a>
+                    <button class="btn btn-primary">
+                        <i class="fa fa-save me-2"></i>Update User
+                    </button>
+                </div>
+            {{ form_end(userForm) }}
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ activite.title }}{% endblock %}
+
+{% block body %}
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Détails de l'Activité</h3>
+                        <p class="text-white mt-2">{{ activite.title }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bradcam_area_end -->
+
+    <div class="popular_causes_area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single_cause mb-0 shadow-none">
+                        <div class="thumb position-relative rounded-3 overflow-hidden">
+                            {% if activite.image %}
+                                <img src="{{ asset('uploads/activites/' ~ activite.image) }}" alt="{{ activite.title }}" class="img-fluid w-100">
+                            {% else %}
+                                <img src="{{ asset('img/causes/1.png') }}" alt="{{ activite.title }}" class="img-fluid w-100">
+                            {% endif %}
+                        </div>
+                        <div class="causes_content mt-5 p-0 bg-transparent shadow-none border-0">
+                            <h2 class="mb-4" style="font-family: 'Yeseva One', cursive;">{{ activite.title }}</h2>
+                            
+                            <div class="d-flex align-items-center mb-4 flex-wrap gap-3">
+                                <span class="badge text-white px-3 py-2" style="background-color: #3CC78F; font-size: 1rem;">
+                                    <i class="fa fa-calendar me-2"></i> {{ activite.date ? activite.date|date('d M Y') : 'Date à venir' }}
+                                </span>
+                                <span class="text-muted d-flex align-items-center">
+                                    <i class="fa fa-map-marker me-2" style="color: #3CC78F; font-size: 1.2rem;"></i> 
+                                    <span class="fs-5">{{ activite.lieu }}</span>
+                                </span>
+                            </div>
+
+                            <div class="text-muted mb-5" style="line-height: 1.8; font-size: 1.1rem;">
+                                {{ activite.description|nl2br }}
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                <a href="{{ path('add_app_benevole', { id: activite.getId() }) }}" class="btn text-white px-5 py-3 rounded-pill fw-bold shadow-sm" style="background-color: #3CC78F; transition: all 0.3s;">
+                                    Rejoindre cette activité
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card shadow-lg border-0 rounded-3 mb-4 position-sticky" style="top: 100px;">
+                        <div class="card-header text-white pt-4 pb-3 border-bottom-0" style="background-color: #3CC78F; border-radius: 1rem 1rem 0 0;">
+                            <h4 class="mb-0 text-white" style="font-family: 'Yeseva One', cursive;">
+                                <i class="fa fa-users me-2"></i>Participants
+                            </h4>
+                            <p class="mb-0 mt-2 text-white-50">{{ activite.benevoles|length }} inscrits</p>
+                        </div>
+                        <div class="card-body p-0">
+                            {% if activite.benevoles is not empty %}
+                                <ul class="list-group list-group-flush">
+                                    {% for benevole in activite.benevoles|slice(0, 5) %}
+                                        <li class="list-group-item px-4 py-3 border-bottom d-flex align-items-center hover-bg-light">
+                                            <div class="avatar me-3 rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" style="width: 45px; height: 45px; background-color: #3CC78F; font-size: 1.2rem;">
+                                                {{ benevole.nom|slice(0, 1)|upper }}
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold text-dark">{{ benevole.nom }}</h6>
+                                                <small class="text-muted"><i class="fa fa-user-o me-1"></i>Bénévole</small>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fa fa-user-plus fa-3x text-muted mb-3 opacity-25"></i>
+                                    <p class="text-muted mb-0">Soyez le premier à participer !</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-white border-top-0 p-3 text-center rounded-bottom-3">
+                            <a href="{{ path('app_benevole_list_benevole', {'id': activite.id}) }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+                                Voir la liste complète
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .hover-bg-light:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+{% endblock %}

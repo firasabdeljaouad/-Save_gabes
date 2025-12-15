@@ -1,0 +1,230 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Corbeille - Utilisateurs Supprimés{% endblock %}
+
+{% block breadcrumb %}Corbeille{% endblock %}
+
+{% block page_title %}Corbeille - Utilisateurs Supprimés{% endblock %}
+
+{% block page_subtitle %}Restaurez ou supprimez définitivement les comptes utilisateurs.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .trash-card {
+            border-radius: 22px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 20px 60px rgba(220, 38, 38, 0.1);
+            overflow: hidden;
+        }
+
+        .trash-card .card-header {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trash-card thead {
+            background: #fef2f2;
+        }
+
+        .trash-card tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .trash-card tbody tr:hover {
+            background: rgba(254, 226, 226, 0.4);
+        }
+
+        .btn-restore {
+            background: linear-gradient(135deg, #86efac, #4ade80);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-restore:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+            color: white;
+        }
+
+        .btn-permanent-delete {
+            background: linear-gradient(135deg, #fca5a5, #ef4444);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-permanent-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            border: none;
+            color: #475569;
+            font-weight: 600;
+            padding: 0.625rem 1.25rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(148, 163, 184, 0.3);
+            color: #334155;
+        }
+
+        .deleted-badge {
+            background: rgba(239, 68, 68, 0.15);
+            color: #991b1b;
+            border-radius: 999px;
+            padding: 0.35rem 0.85rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .empty-trash-icon {
+            font-size: 4rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .role-badge {
+            background: rgba(196, 181, 253, 0.35);
+            color: #5b21b6;
+            border-radius: 999px;
+            padding: 0.35rem 0.85rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .role-badge.admin {
+            background: rgba(248, 180, 217, 0.5);
+            color: #be185d;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    <div class="trash-card card">
+        <div class="card-header">
+            <div>
+                <h5 class="mb-0"><i class="fa fa-trash me-2"></i>Corbeille</h5>
+                <small class="text-muted">{{ users|length }} utilisateur(s) supprimé(s)</small>
+            </div>
+            <a href="{{ path('admin_user_index') }}" class="btn-back">
+                <i class="fa fa-arrow-left"></i>
+                Retour aux utilisateurs
+            </a>
+        </div>
+        <div class="card-body p-0">
+            {% if users|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Sexe</th>
+                                <th>Rôle</th>
+                                <th>Supprimé le</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+                                    </td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.phoneNumber ?: '—' }}</td>
+                                    <td>{{ user.sexe ? user.sexe|capitalize : '—' }}</td>
+                                    <td>
+                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                            <span class="role-badge admin">Admin</span>
+                                        {% else %}
+                                            <span class="role-badge">User</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="deleted-badge">
+                                            <i class="fa fa-calendar me-1"></i>
+                                            {{ user.deletedAt|date('d/m/Y H:i') }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <form method="post" action="{{ path('admin_user_restore', {'id': user.id}) }}" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('restore_user_' ~ user.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-restore me-2" onclick="return confirm('Êtes-vous sûr de vouloir restaurer cet utilisateur ?')">
+                                                <i class="fa fa-undo"></i> Restaurer
+                                            </button>
+                                        </form>
+                                        
+                                        <form method="post" action="{{ path('admin_user_permanent_delete', {'id': user.id}) }}" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('permanent_delete_user_' ~ user.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-permanent-delete" onclick="return confirm('⚠️ ATTENTION: Cette action est IRRÉVERSIBLE!\\n\\nVoulez-vous vraiment supprimer définitivement cet utilisateur ?\\n\\nToutes ses données seront perdues à jamais.')">
+                                                <i class="fa fa-times"></i> Supprimer définitivement
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="card-footer bg-light">
+                    <div class="alert alert-warning mb-0">
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> Les utilisateurs dans la corbeille peuvent être restaurés ou supprimés définitivement. 
+                        La suppression définitive est <strong>irréversible</strong> et supprimera toutes les données de l'utilisateur.
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="empty-trash-icon">
+                        <i class="fa fa-trash"></i>
+                    </div>
+                    <h4 class="text-muted">La corbeille est vide</h4>
+                    <p class="text-muted mb-4">Aucun utilisateur supprimé pour le moment.</p>
+                    <a href="{{ path('admin_user_index') }}" class="btn-back">
+                        <i class="fa fa-arrow-left"></i>
+                        Retour aux utilisateurs
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

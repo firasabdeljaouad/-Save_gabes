@@ -1,0 +1,23 @@
+.table-borderless {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-top: 2px solid #57c557;   /* bordure en haut */
+    border-bottom: 2px solid #57c557; /* bordure en bas */
+}
+
+.table-borderless th {
+    background: #57c557;
+    color: white;
+    padding: 12px;
+    border-bottom: 2px solid #57c557; /* séparation header / body */
+}
+
+.table-borderless td {
+    padding: 10px;
+    text-align: center;
+}
+
+.table-borderless tr:hover {
+    background-color: rgba(17, 250, 17, 0.49);
+}

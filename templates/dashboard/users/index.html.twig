@@ -1,0 +1,389 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Users Management{% endblock %}
+
+{% block breadcrumb %}Users{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .users-hero {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .users-hero h2 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #312e81;
+        }
+
+        .users-hero p {
+            color: #6b7280;
+            max-width: 480px;
+        }
+
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pastel-card {
+            border: none;
+            border-radius: 18px;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(250, 245, 255, 0.9), rgba(236, 254, 255, 0.9));
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .pastel-card h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4c1d95;
+        }
+
+        .users-form-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: var(--shadow-md);
+        }
+
+        .users-form-card .card-header {
+            background: linear-gradient(135deg, #fbcfe8, #e0f2fe);
+            border-radius: 18px 18px 0 0;
+            border-bottom: none;
+        }
+
+        .users-form-card .btn-primary {
+            background: linear-gradient(135deg, #a5b4fc, #c084fc);
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .users-table-card {
+            border-radius: 22px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+        }
+
+        .users-table-card thead {
+            background: #f8fafc;
+        }
+
+        .users-table-card tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .users-table-card tbody tr:hover {
+            background: rgba(226, 232, 240, 0.4);
+        }
+
+        .gender-chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            margin: 0;
+            padding-left: 1rem;
+            border-left: 2px dashed rgba(148, 163, 184, 0.6);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #c084fc;
+            border: 3px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #312e81;
+        }
+
+        .timeline-meta {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .users-table-card .badge {
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .status-badge.active {
+            background: rgba(134, 239, 172, 0.35);
+            color: #166534;
+        }
+
+        .status-badge.inactive {
+            background: rgba(148, 163, 184, 0.4);
+            color: #475569;
+        }
+
+        .role-badge {
+            background: rgba(196, 181, 253, 0.35);
+            color: #5b21b6;
+            border-radius: 999px;
+            padding: 0.35rem 0.85rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .role-badge.admin {
+            background: rgba(248, 180, 217, 0.5);
+            color: #be185d;
+        }
+
+        @media (max-width: 768px) {
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .users-hero {
+                flex-direction: column;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% set genderCounts = {'male': 0, 'female': 0, 'other': 0} %}
+    {% for user in users %}
+        {% set key = user.sexe ? user.sexe|lower : 'other' %}
+        {% set normalized = key in ['male','homme','m'] ? 'male' : (key in ['female','femme','f'] ? 'female' : 'other') %}
+        {% set genderCounts = genderCounts|merge({ (normalized): genderCounts[normalized] + 1 }) %}
+    {% endfor %}
+    {% set totalUsers = users|length %}
+    {% set recentUsers = users|sort((a,b) => (a.createdAt <=> b.createdAt))|reverse|slice(0,5) %}
+
+    <div class="users-hero">
+        <div>
+            <h2>Users Management</h2>
+            <p>Keep the community organized: onboard new members, update permissions and keep an eye on recent account activity at a glance.</p>
+        </div>
+        <div class="pastel-card flex-grow-1">
+            <h5>Total Users</h5>
+            <div style="font-size:2.5rem;font-weight:700;color:#0f172a;">{{ totalUsers }}</div>
+            <p class="mb-0" style="color:#475569;">{{ genderCounts.female }} women • {{ genderCounts.male }} men • {{ genderCounts.other }} other</p>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <div class="users-grid">
+        <div class="pastel-card">
+            <h5>Users by Gender</h5>
+            <p class="text-muted">Visualize the gender balance across the platform.</p>
+            <div class="gender-chart-wrapper">
+                <canvas id="genderChart" width="280" height="280" aria-label="Gender distribution chart" role="img"></canvas>
+            </div>
+        </div>
+        <div class="pastel-card">
+            <h5>Activity Timeline</h5>
+            <p class="text-muted">Latest accounts created or updated.</p>
+            <div class="timeline">
+                {% if recentUsers is not empty %}
+                    {% for activity in recentUsers %}
+                        <div class="timeline-item">
+                            <span class="timeline-dot"></span>
+                            <div class="timeline-title">{{ activity.firstName }} {{ activity.lastName }}</div>
+                            <div class="timeline-meta">
+                                {{ activity.createdAt ? activity.createdAt|date('d M Y • H:i') : 'Date N/A' }}
+                                · {{ activity.status|capitalize }}
+                                · {{ 'ROLE_ADMIN' in activity.roles ? 'Admin' : 'User' }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="timeline-item">
+                        <span class="timeline-dot"></span>
+                        <div class="timeline-title">No activity yet</div>
+                        <div class="timeline-meta">Add your first user to populate the timeline.</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="users-form-card card col-span-2">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa fa-user-plus text-primary"></i> Create New User</h5>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+                    <div class="col-md-6">
+                        {{ form_row(form.firstName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.lastName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.phoneNumber) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.sexe) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.status) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.role) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_row(form.plainPassword) }}
+                    </div>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn btn-primary px-4">
+                            <i class="fa fa-save me-2"></i>Save User
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="users-table-card card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">Users List</h5>
+                <small class="text-muted">Create, update or delete any user entry.</small>
+            </div>
+            <span class="badge bg-light text-dark">{{ totalUsers }} records</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th>Status</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+                                <div class="text-muted small">{{ user.status|capitalize }}</div>
+                            </td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phoneNumber ?: '-' }}</td>
+                            <td>{{ user.sexe ? user.sexe|capitalize : '—' }}</td>
+                            <td>
+                                <span class="status-badge {{ user.status == 'active' ? 'active' : 'inactive' }}">
+                                    {{ user.status|capitalize }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if 'ROLE_ADMIN' in user.roles %}
+                                    <span class="role-badge admin">Admin</span>
+                                {% else %}
+                                    <span class="role-badge">User</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d') : '-' }}</td>
+                            <td class="text-end">
+                                <a href="{{ path('dashboard_users_edit', {id: user.id}) }}" class="btn btn-sm btn-outline-primary me-2">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <form action="{{ path('dashboard_users_delete', {id: user.id}) }}" method="post" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">No users found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const genderCounts = {{ genderCounts|json_encode|raw }};
+        const chartContext = document.getElementById('genderChart');
+        if (chartContext) {
+            new Chart(chartContext, {
+                type: 'pie',
+                data: {
+                    labels: ['Female', 'Male', 'Other'],
+                    datasets: [{
+                        data: [genderCounts.female, genderCounts.male, genderCounts.other],
+                        backgroundColor: ['#f9a8d4', '#bfdbfe', '#fde68a'],
+                        borderColor: '#ffffff',
+                        borderWidth: 3,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#475569', usePointStyle: true }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "dashboard.html.twig" %}
+{% block title %}list de projet{% endblock %}
+{% block body %}
+    <br>
+    <table class ="table-borderless">
+        <tr>
+            <th>Name</th>
+            <th>image</th>
+            <th>TargetAmount</th>
+            <th> StartDate </th>
+            <th> End Date </th>
+            <th> Description </th>
+            <th> Function</th>
+        </tr>
+        {% for projet in projets_list %}
+            <tr>
+                <td>{{ projet.name }}</td>
+                <td>
+                    <img src="{{ asset('uploads/imgsProject/' ~ projet.image) }}" alt="{{ projet.name }}" width="100">
+                </td>
+                <td>{{ projet.TargetAmount }}</td>
+                <td>{{ projet.startDate|date('Y-m-d') }}</td>
+                <td>{{ projet.endDate|date('Y-m-d') }}</td>
+                <td>{{ projet.description }}</td>
+                <td><a role="button"  href ="{{ path('app_projet',{id:projet.id}) }}">Ajoute</a> |
+                    <a role="button"  href="{{ path('update_app_projet',{id:projet.id}) }}">Update</a>|
+                    <a role="button" class="danger"  href ="{{ path('delete_app_projet',{id:projet.id}) }}">Delete</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

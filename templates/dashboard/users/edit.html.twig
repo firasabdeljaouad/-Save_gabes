@@ -1,0 +1,52 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block breadcrumb %}Edit User{% endblock %}
+
+{% block body %}
+    <div class="card" style="border-radius: 15px;">
+        <div class="card-header bg-light" style="border-radius: 15px 15px 0 0;">
+            <h5 class="mb-0"><i class="fa fa-edit text-success"></i> Edit {{ userEntity.firstName }} {{ userEntity.lastName }}</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(userForm, {'attr': {'class': 'row g-3'}}) }}
+                <div class="col-md-6">
+                    {{ form_row(userForm.firstName) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.lastName) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.email) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(userForm.phoneNumber) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.sexe) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.status) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(userForm.role) }}
+                </div>
+                <div class="col-md-12">
+                    {{ form_row(userForm.plainPassword) }}
+                    <small class="form-text text-muted">Leave blank to keep the current password</small>
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                    <a href="{{ path('dashboard_users') }}" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                    <button class="btn btn-success" style="background-color:#8fd19e;border-color:#8fd19e;color:#155724;">
+                        <i class="fa fa-save"></i> Update User
+                    </button>
+                </div>
+            {{ form_end(userForm) }}
+        </div>
+    </div>
+{% endblock %}
+
+

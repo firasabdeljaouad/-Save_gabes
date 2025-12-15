@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Bénévoles</title>
+    <style>
+        body { font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h1 { text-align: center; }
+        .header { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Liste des Bénévoles</h1>
+        <h3>Activité : {{ activite.title ?? 'Activité' }}</h3>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for benevole in benevoles %}
+                <tr>
+                    <td>{{ benevole.nom }}</td>
+                    <td>{{ benevole.email }}</td>
+                    <td>{{ benevole.telephone }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center;">Aucun bénévole inscrit.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

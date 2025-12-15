@@ -1,0 +1,7 @@
+framework:
+    # Protection CSRF pour les formulaires
+    csrf_protection:
+        enabled: true
+
+
+

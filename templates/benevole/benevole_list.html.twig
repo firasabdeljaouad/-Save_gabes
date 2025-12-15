@@ -1,0 +1,89 @@
+{% extends "base.html.twig" %}
+{% block title %}Liste des bénévoles{% endblock %}
+
+{% block body %}
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Liste des Bénévoles</h3>
+                        <p class="text-white mt-2">Activité : {{ activite.title }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bradcam_area_end -->
+
+    <div class="container mt-5 mb-5">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #3CC78F;">
+                <h3 class="mb-0 text-white" style="font-family: 'Yeseva One', cursive;">Bénévoles Inscrits</h3>
+                <span class="badge bg-white text-success fs-6">{{ benevoles.getTotalItemCount }} Participants</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-8">
+                        <form method="get" class="d-flex shadow-sm rounded">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fa fa-search text-muted"></i>
+                                </span>
+                                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Rechercher par nom..." value="{{ search|default('') }}">
+                                <button type="submit" class="btn text-white" style="background-color: #3CC78F;">Rechercher</button>
+                                {% if search|default(false) %}
+                                    <a href="{{ path('app_benevole_list_benevole', {'id': activite.id}) }}" class="btn btn-outline-secondary ms-2">Réinitialiser</a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a href="{{ path('app_benevole_list_pdf', {'id': activite.id}) }}" class="btn btn-outline-danger shadow-sm">
+                            <i class="fa fa-file-pdf-o me-2"></i>Télécharger la liste
+                        </a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr style="border-bottom: 2px solid #3CC78F;">
+                                <th scope="col" class="py-3 ps-4" style="color: #3CC78F; font-weight: 700;">NOM COMPLET</th>
+                                <th scope="col" class="py-3" style="color: #3CC78F; font-weight: 700;">ADRESSE EMAIL</th>
+                                <th scope="col" class="py-3" style="color: #3CC78F; font-weight: 700;">TÉLÉPHONE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for benevole in benevoles %}
+                                <tr>
+                                    <td class="fw-bold text-secondary ps-4">{{ benevole.nom }}</td>
+                                    <td>{{ benevole.email }}</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="fa fa-phone me-1 text-success"></i> {{ benevole.telephone }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 text-muted">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <i class="fa fa-users fa-3x mb-3 text-secondary opacity-50"></i>
+                                            <p class="mb-0 fs-5">Aucun bénévole trouvé pour cette recherche.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    {{ knp_pagination_render(benevoles) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

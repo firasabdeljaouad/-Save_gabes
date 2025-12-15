@@ -1,0 +1,60 @@
+
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Liste des événements</h1>
+
+
+
+        <a href="{{ path('addForm_evenement') }}">
+            <i class="fas fa-plus"></i> Ajouter un événement
+        </a>
+
+        <table class ="table-borderless">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Lieu</th>
+                <th>Adresse</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Nombre Nombre Participant</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for evenement in tabEvenements %}
+                <tr>
+                    <td>{{ evenement.id }}</td>
+                    <td>{{ evenement.titre }}</td>
+                    <td>{{ evenement.lieu }}</td>
+                    <td>{{ evenement.adresse }}</td>
+                    <td>{{ evenement.dateDebut|date('d/m/Y') }}</td>
+                    <td>{{ evenement.dateFin|date('d/m/Y') }}</td>
+                    <td>0</td>
+                    <td>
+                        <span class="badge bg-info">{{ evenement.status }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ path('update_evenement', {id: evenement.id}) }}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <a href="{{ path('remove_evenement', {id: evenement.id}) }}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9" class="text-center">Aucun événement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
